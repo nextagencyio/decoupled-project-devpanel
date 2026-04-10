@@ -52,11 +52,12 @@ time composer clear-cache
 time composer -n install --no-dev --optimize-autoloader --no-progress
 
 #== Create required directories.
-if [ ! -d private ]; then
-  echo
-  echo 'Create the private files directory.'
-  time mkdir -p private
-fi
+echo 'Ensure private files directory exists and is writable.'
+mkdir -p private
+sudo chown -R www-data:www-data private 2>/dev/null || \
+  sudo chown -R www:www private 2>/dev/null || \
+  chmod -R 777 private || :
+chmod -R 775 private || :
 
 if [ ! -d config/sync ]; then
   echo
@@ -64,16 +65,14 @@ if [ ! -d config/sync ]; then
   time mkdir -p config/sync
 fi
 
-#== Create public files directory (must exist before Drupal can serve).
-if [ ! -d web/sites/default/files ]; then
-  echo
-  echo 'Create the public files directory.'
-  [ -f web/sites/default/files ] && rm -f web/sites/default/files || :
-  time mkdir -p web/sites/default/files || :
-fi
+#== Create public files directory (must exist + be writable by web server).
+echo
+echo 'Ensure public files directory exists and is writable.'
 mkdir -p web/sites/default/files/media-icons/generic || :
-echo 'Set permissions on public files directory.'
-time chmod -R 775 web/sites/default/files || :
+sudo chown -R www-data:www-data web/sites/default/files 2>/dev/null || \
+  sudo chown -R www:www web/sites/default/files 2>/dev/null || \
+  chmod -R 777 web/sites/default/files || :
+chmod -R 775 web/sites/default/files || :
 
 #== Ensure settings.php exists and is writable (drush site:install needs to write to it).
 if [ ! -f web/sites/default/settings.php ]; then

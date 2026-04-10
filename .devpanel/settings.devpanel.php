@@ -27,8 +27,15 @@ if (file_exists($salt_file)) {
 // Config sync directory.
 $settings['config_sync_directory'] = '../config/sync';
 
-// Private files.
-$settings['file_private_path'] = '../private';
+// Private files — only set if the directory exists AND is writable.
+// On DevPanel the web server may start serving before init.sh has created
+// and chowned the directory. If we set the path unconditionally, Drupal's
+// installer flags it as a permissions error. init.sh creates + chmods the
+// directory, so on subsequent requests this condition is true.
+$private_path = dirname($app_root) . '/private';
+if (is_dir($private_path) && is_writable($private_path)) {
+  $settings['file_private_path'] = $private_path;
+}
 
 // Trusted host patterns from DevPanel hostname.
 $dp_hostname = getenv('DP_HOSTNAME');

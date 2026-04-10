@@ -7,11 +7,11 @@
 STATIC_FILES_PATH="$WEB_ROOT/sites/default/files/"
 SETTINGS_FILES_PATH="$WEB_ROOT/sites/default/settings.php"
 
-# Create static files directory + media-icons subdirectory.
-if [ ! -d "$STATIC_FILES_PATH" ]; then
-  mkdir -p $STATIC_FILES_PATH
-fi
+# Create static files directory + media-icons subdirectory + fix ownership.
 mkdir -p "${STATIC_FILES_PATH}media-icons/generic" || :
+sudo chown -R www-data:www-data "$STATIC_FILES_PATH" 2>/dev/null || \
+  sudo chown -R www:www "$STATIC_FILES_PATH" 2>/dev/null || \
+  chmod -R 777 "$STATIC_FILES_PATH" || :
 
 # Ensure settings.php exists with DevPanel include.
 if [ ! -f "$SETTINGS_FILES_PATH" ]; then

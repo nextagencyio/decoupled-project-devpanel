@@ -1,0 +1,8 @@
+name: 'DC Puck Editor'
+type: module
+description: 'Visual page builder integration with Puck editor — maps Puck components to Drupal paragraphs'
+core_version_requirement: ^10 || ^11
+package: 'Decoupled'
+dependencies:
+  - drupal:node
+  - paragraphs:paragraphs

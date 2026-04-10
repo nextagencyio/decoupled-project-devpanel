@@ -1,0 +1,10 @@
+services:
+  dc_usage.limits:
+    class: Drupal\dc_usage\Service\UsageLimitsService
+    arguments: ['@entity_type.manager', '@logger.factory']
+
+  dc_usage.api_request_subscriber:
+    class: Drupal\dc_usage\EventSubscriber\ApiRequestSubscriber
+    arguments: ['@database']
+    tags:
+      - { name: event_subscriber }

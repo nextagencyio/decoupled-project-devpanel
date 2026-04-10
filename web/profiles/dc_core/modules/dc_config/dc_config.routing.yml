@@ -1,0 +1,138 @@
+dc_config.admin:
+  path: '/admin/config/decoupled/configuration'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::configPage'
+    _title: 'Decoupled Drupal Configuration'
+  requirements:
+    _permission: 'administer decoupled configuration'
+
+dc_config.homepage:
+  path: '/dc-config'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::homePage'
+    _title: 'Decoupled Drupal Configuration'
+  requirements:
+    _access: 'TRUE'
+
+dc_config.generate_secret:
+  path: '/dc-config/generate-secret'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::generateSecret'
+    _title: 'Generate Revalidation Secret'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+
+dc_config.generate_secret_ajax:
+  path: '/dc-config/generate-secret-ajax'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::generateSecretAjax'
+    _title: 'Generate Secret Ajax'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+
+dc_config.import_starter:
+  path: '/dc-config/import-starter'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::importStarter'
+    _title: 'Import Starter Content'
+  requirements:
+    _permission: 'administer site configuration'
+  methods: [POST]
+
+# Frontend status API (POST: set by dashboard, GET: read by JS)
+dc_config.set_frontend_status:
+  path: '/api/dc-config/frontend-status'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::setFrontendStatus'
+    _title: 'Set Frontend Status'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+
+dc_config.get_frontend_status:
+  path: '/api/dc-config/frontend-status'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::getFrontendStatus'
+    _title: 'Get Frontend Status'
+  requirements:
+    _access: 'TRUE'
+  methods: [GET]
+
+dc_config.trigger_connect:
+  path: '/dc-config/trigger-connect'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::triggerConnect'
+    _title: 'Trigger Frontend Connect'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+
+decoupled.admin_category:
+  path: '/admin/config/decoupled'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Decoupled Drupal'
+  requirements:
+    _permission: 'administer site configuration'
+
+# Vercel OAuth Integration Routes
+dc_config.vercel_connect:
+  path: '/dc-config/vercel/connect'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::vercelConnect'
+    _title: 'Connect to Vercel'
+  requirements:
+    _permission: 'administer site configuration'
+
+dc_config.vercel_callback:
+  path: '/dc-config/vercel/callback'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::vercelCallback'
+    _title: 'Vercel OAuth Callback'
+  requirements:
+    _access: 'TRUE'
+
+dc_config.vercel_disconnect:
+  path: '/dc-config/vercel/disconnect'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::vercelDisconnect'
+    _title: 'Disconnect from Vercel'
+  requirements:
+    _permission: 'administer site configuration'
+  methods: [POST]
+
+dc_config.vercel_projects:
+  path: '/dc-config/vercel/projects'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::vercelProjects'
+    _title: 'List Vercel Projects'
+  requirements:
+    _permission: 'administer site configuration'
+
+dc_config.vercel_sync:
+  path: '/dc-config/vercel/sync'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::vercelSync'
+    _title: 'Sync Environment Variables to Vercel'
+  requirements:
+    _permission: 'administer site configuration'
+  methods: [POST]
+
+dc_config.vercel_rebuild:
+  path: '/dc-config/vercel/rebuild'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::vercelRebuild'
+    _title: 'Trigger Vercel Rebuild'
+  requirements:
+    _permission: 'administer site configuration'
+  methods: [POST]
+
+dc_config.vercel_deployment_status:
+  path: '/dc-config/vercel/deployment-status'
+  defaults:
+    _controller: '\Drupal\dc_config\Controller\DcConfigController::vercelDeploymentStatus'
+    _title: 'Vercel Deployment Status'
+  requirements:
+    _permission: 'administer site configuration'

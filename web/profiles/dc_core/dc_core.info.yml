@@ -1,0 +1,95 @@
+name: 'Decoupled Drupal Core'
+type: profile
+description: 'Decoupled Drupal headless CMS with GraphQL, OAuth, modern content tools, and admin interface.'
+core_version_requirement: ^11
+version: 1.0.0
+
+# Installation profile dependencies (installed in order)
+dependencies:
+  # Core modules for modern Drupal
+  - drupal:ckeditor5
+  - drupal:config
+  - drupal:content_moderation
+  - drupal:dblog
+  - drupal:help
+  - drupal:datetime
+  - drupal:datetime_range
+  - drupal:field_ui
+  - drupal:file
+  - drupal:image
+  - drupal:link
+  - drupal:media
+  - drupal:media_library
+  - drupal:menu_link_content
+  - drupal:menu_ui
+  - drupal:node
+  - drupal:options
+  - drupal:path
+  - drupal:shortcut
+  - drupal:taxonomy
+  - drupal:block
+
+  # URL and path management
+  - pathauto:pathauto
+  - token:token
+
+  # JSON:API for headless compatibility
+  - drupal:jsonapi
+  - drupal:serialization
+
+  # Core caching for performance
+  - drupal:page_cache
+  - drupal:dynamic_page_cache
+
+  # Redis caching for performance
+  - redis:redis
+
+  # Decoupled preview iframe for content preview
+  - decoupled_preview_iframe:decoupled_preview_iframe
+
+  # GraphQL modules for modern API
+  - graphql:graphql
+  - graphql_compose:graphql_compose
+  - graphql_compose:graphql_compose_edges
+  - graphql_compose:graphql_compose_image_style
+  - graphql_compose:graphql_compose_menus
+  - graphql_compose:graphql_compose_routes
+  - graphql_compose_preview:graphql_compose_preview
+
+  # OAuth authentication for headless apps
+  - simple_oauth:simple_oauth
+  - consumers:consumers
+
+  # Admin experience with Gin theme modules
+  - gin:gin_login
+  - gin:gin_toolbar
+
+  # Admin toolbar for enhanced navigation
+  - admin_toolbar:admin_toolbar
+  - admin_toolbar:admin_toolbar_tools
+
+  # Paragraphs for structured content
+  - paragraphs:paragraphs
+  - entity_reference_revisions:entity_reference_revisions
+
+  # Field modules
+  - field_group:field_group
+
+  # Profile modules (from profile/modules directory)
+  - dc_fields
+  - dc_api
+  - dc_admin
+  - dc_config
+  - dc_import
+  - dc_config_import
+  - dc_login
+  - dc_mail
+  - dc_revalidate
+  - dc_usage
+  - dc_user_redirect
+  - dc_puck
+
+# Themes
+themes:
+  - gin
+  - stark

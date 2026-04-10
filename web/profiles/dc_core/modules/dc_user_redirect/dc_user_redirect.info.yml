@@ -1,0 +1,8 @@
+name: 'Decoupled Drupal User Redirect'
+type: module
+description: 'Redirects logged-in users from password reset links to their user page instead of showing access denied'
+core_version_requirement: ^9 || ^10 || ^11
+package: Decoupled
+dependencies:
+  - drupal:system
+  - drupal:user

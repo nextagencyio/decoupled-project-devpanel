@@ -1,0 +1,104 @@
+<?php
+
+/**
+ * @file
+ * Decoupled Drupal Usage module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\user\UserInterface;
+use Drupal\node\NodeTypeInterface;
+
+/**
+ * Implements hook_help().
+ */
+function dc_usage_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.dc_usage':
+      return '<p>' . t('Provides usage statistics and tracking for Decoupled Drupal spaces.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ *
+ * Prevents creation of new entities when limits are reached.
+ */
+function dc_usage_entity_presave(EntityInterface $entity) {
+  $limits_service = \Drupal::service('dc_usage.limits');
+
+  // Check user limits
+  if ($entity instanceof UserInterface && $entity->isNew()) {
+    if (!$limits_service->canCreateUser()) {
+      $limits = $limits_service->getCurrentPlanLimits();
+      throw new \Exception(t('User limit reached. Your current plan allows @limit users. Please upgrade to create more users.', [
+        '@limit' => $limits['users'],
+      ]));
+    }
+  }
+
+  // Check entity/content limits (nodes)
+  if ($entity->getEntityTypeId() === 'node' && $entity->isNew()) {
+    if (!$limits_service->canCreateEntity()) {
+      $limits = $limits_service->getCurrentPlanLimits();
+      throw new \Exception(t('Content limit reached. Your current plan allows @limit total content items. Please upgrade to create more content.', [
+        '@limit' => number_format($limits['entities']),
+      ]));
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for node_type_add_form.
+ *
+ * Prevents creation of new content types when limit is reached.
+ */
+function dc_usage_form_node_type_add_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $limits_service = \Drupal::service('dc_usage.limits');
+
+  if (!$limits_service->canCreateContentType()) {
+    $limits = $limits_service->getCurrentPlanLimits();
+
+    // Disable the form
+    $form['#disabled'] = TRUE;
+
+    // Add an error message
+    \Drupal::messenger()->addError(t('Content type limit reached. Your current plan allows @limit content types. Please upgrade to create more content types.', [
+      '@limit' => $limits['content_types'],
+    ]));
+
+    // Hide the submit button
+    if (isset($form['actions']['submit'])) {
+      $form['actions']['submit']['#access'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Implements hook_node_type_insert().
+ *
+ * Additional validation when a content type is created (in case form alter is bypassed).
+ */
+function dc_usage_node_type_insert(NodeTypeInterface $node_type) {
+  $limits_service = \Drupal::service('dc_usage.limits');
+
+  // Get current count (including the one just created)
+  $current_count = count(\Drupal\node\Entity\NodeType::loadMultiple());
+
+  // Check if we exceeded the limit
+  $limits = $limits_service->getCurrentPlanLimits();
+  if ($limits['content_types'] !== -1 && $current_count > $limits['content_types']) {
+    // Log a warning
+    \Drupal::logger('dc_usage')->warning('Content type @type was created but exceeds plan limit of @limit', [
+      '@type' => $node_type->id(),
+      '@limit' => $limits['content_types'],
+    ]);
+
+    // Notify admins
+    \Drupal::messenger()->addWarning(t('Warning: You have exceeded your content type limit of @limit. Please upgrade your plan or remove content types.', [
+      '@limit' => $limits['content_types'],
+    ]));
+  }
+}

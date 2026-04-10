@@ -1,0 +1,246 @@
+{
+  "model": [
+    {
+      "bundle": "news_article",
+      "description": "Blog articles and news posts with rich media and categorization",
+      "label": "News Article",
+      "body": true,
+      "fields": [
+        {
+          "id": "summary",
+          "label": "Summary",
+          "type": "string",
+          "description": "Short text field (max 255 chars) for news_article preview"
+        },
+        {
+          "id": "featured_image",
+          "label": "Featured Image",
+          "type": "image",
+          "description": "Single image upload for news_article hero"
+        },
+        {
+          "id": "published_date",
+          "label": "Published Date",
+          "type": "datetime",
+          "description": "Date and time field for publication scheduling"
+        },
+        {
+          "id": "author",
+          "label": "Author Name",
+          "type": "string"
+        },
+        {
+          "id": "tags",
+          "label": "Tags",
+          "type": "term(tags)[]",
+          "description": "Multiple taxonomy term references"
+        },
+        {
+          "id": "featured",
+          "label": "Featured Article",
+          "type": "bool",
+          "description": "Boolean flag for promoting articles"
+        },
+        {
+          "id": "key_points",
+          "label": "Key Points",
+          "type": "string[]",
+          "description": "Multiple string values - best for simple lists without HTML"
+        },
+        {
+          "id": "gallery",
+          "label": "Image Gallery",
+          "type": "image[]",
+          "description": "Multiple image uploads"
+        },
+        {
+          "id": "content_blocks",
+          "label": "Content Blocks",
+          "type": "paragraph(content_block)[]",
+          "description": "Multiple paragraph entity references for structured content"
+        }
+      ]
+    },
+    {
+      "entity": "paragraph",
+      "bundle": "content_block",
+      "description": "Reusable content blocks with images and formatted text",
+      "label": "Content Block",
+      "fields": [
+        {
+          "id": "block_title",
+          "label": "Block Title",
+          "type": "string!",
+          "description": "Required field (note the ! suffix)"
+        },
+        {
+          "id": "block_content",
+          "label": "Block Content",
+          "type": "text",
+          "description": "Long text with HTML formatting"
+        },
+        {
+          "id": "block_image",
+          "label": "Block Image",
+          "type": "image"
+        }
+      ]
+    },
+    {
+      "bundle": "product",
+      "description": "E-commerce products with pricing, inventory, and specifications",
+      "label": "Product",
+      "body": true,
+      "fields": [
+        {
+          "id": "price",
+          "label": "Price",
+          "type": "string",
+          "description": "Product price as formatted string (e.g. '$299.99')"
+        },
+        {
+          "id": "sku",
+          "label": "SKU",
+          "type": "string",
+          "description": "Product identifier"
+        },
+        {
+          "id": "in_stock",
+          "label": "In Stock",
+          "type": "bool"
+        },
+        {
+          "id": "product_images",
+          "label": "Product Images",
+          "type": "image[]",
+          "description": "Multiple product photos"
+        },
+        {
+          "id": "features",
+          "label": "Key Features",
+          "type": "string[]",
+          "description": "List of product features (plain text, no HTML)"
+        },
+        {
+          "id": "specifications",
+          "label": "Specifications",
+          "type": "string[]",
+          "description": "Technical specifications"
+        }
+      ]
+    }
+  ],
+  "content": [
+    {
+      "id": "block1",
+      "type": "paragraph.content_block",
+      "values": {
+        "block_title": "Introduction",
+        "block_content": "<p>This is an <strong>example content block</strong> with formatted text.</p>"
+      }
+    },
+    {
+      "id": "article1",
+      "type": "node.news_article",
+      "path": "/articles/getting-started-with-drupal",
+      "values": {
+        "title": "Getting Started with Decoupled Drupal",
+        "summary": "Learn how to build modern web applications with Drupal as a headless CMS",
+        "body": "<p>Decoupled Drupal enables you to use Drupal as a powerful content management backend while building your frontend with modern JavaScript frameworks.</p><p>This architecture provides flexibility, performance, and an excellent developer experience.</p>",
+        "published_date": "2024-03-15T09:00:00",
+        "author": "Jane Smith",
+        "featured": true,
+        "key_points": [
+          "Use Drupal for content management",
+          "Build frontend with Next.js, React, or Vue",
+          "Connect via GraphQL or REST API",
+          "Deploy frontend and backend independently"
+        ],
+        "tags": [
+          "drupal",
+          "headless-cms",
+          "web-development"
+        ],
+        "content_blocks": [
+          "@block1"
+        ]
+      }
+    },
+    {
+      "id": "product1",
+      "type": "node.product",
+      "path": "/products/wireless-charger-pro",
+      "values": {
+        "title": "Wireless Charger Pro",
+        "body": "<p>Experience the future of charging with our premium wireless charging pad. Sleek design meets powerful performance.</p>",
+        "price": "$79.99",
+        "sku": "WCP-2024-BLK",
+        "in_stock": true,
+        "features": [
+          "Fast 15W wireless charging",
+          "Qi-compatible with all devices",
+          "Non-slip rubberized surface",
+          "LED charging indicator",
+          "Overheat protection"
+        ],
+        "specifications": [
+          "Input: USB-C 5V/3A",
+          "Output: 15W max",
+          "Size: 4 x 4 x 0.5 inches",
+          "Weight: 3.2 oz",
+          "Color: Matte Black"
+        ]
+      }
+    }
+  ],
+  "_comments": {
+    "field_types": {
+      "string": "Short text (max 255 chars), plain text only",
+      "text": "Long text with HTML formatting support",
+      "string[]": "Multiple string values - best for simple lists like features, tags, specifications",
+      "text[]": "Multiple text values with HTML - use sparingly, prefer string[] for lists",
+      "image": "Single image upload with uri, alt, title properties",
+      "image[]": "Multiple image uploads",
+      "datetime": "Date and time in ISO 8601 format (YYYY-MM-DDTHH:mm:ss)",
+      "bool": "Boolean true/false value",
+      "term(vocabulary)[]": "Taxonomy term references, creates/assigns terms automatically",
+      "paragraph(bundle)[]": "References to paragraph entities for structured content",
+      "string!": "Required field (note the ! suffix)"
+    },
+    "image_format": {
+      "description": "Images require full URLs with Drupal domain, not relative paths",
+      "example": {
+        "uri": "https://example.com/path/to/image.png",
+        "alt": "Descriptive alt text for accessibility",
+        "title": "Image title"
+      },
+      "note": "Use full URLs to publicly accessible images"
+    },
+    "content_references": {
+      "description": "Reference other content items using @id syntax",
+      "example": "\"content_blocks\": [\"@block1\", \"@block2\"]",
+      "note": "Referenced content must be defined earlier in the content array"
+    },
+    "field_naming": {
+      "important": "In DC import JSON, use field 'id' directly (e.g., 'price'), NOT 'field_price'",
+      "note": "Drupal automatically prefixes with 'field_' internally",
+      "graphql": "GraphQL field names may transform to camelCase (e.g., in_stock → inStock)"
+    },
+    "best_practices": [
+      "Use string[] for simple lists (features, specifications) - avoids HTML rendering complexity",
+      "Use text[] only when you need rich HTML formatting within each list item",
+      "Always include sample content for immediate testing",
+      "Use descriptive field IDs that are clear and consistent",
+      "Include alt text for all images for accessibility",
+      "Set body: true to include standard body field",
+      "Use path aliases following /content-type/slug pattern"
+    ],
+    "common_patterns": {
+      "e-commerce": "price (string), sku (string), in_stock (bool), product_images (image[]), features (string[])",
+      "blog": "summary (string), author (string), published_date (datetime), tags (term[]), featured (bool)",
+      "events": "event_date (datetime), location (string), registration_url (string), speakers (string[])",
+      "team": "position (string), profile_image (image), bio (text), social_links (string[])",
+      "portfolio": "project_url (string), technologies (string[]), project_images (image[]), client (string)"
+    }
+  }
+}

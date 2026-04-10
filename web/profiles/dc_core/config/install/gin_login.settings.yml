@@ -1,0 +1,6 @@
+brand_image:
+  use_default: '0'
+  path: 'profiles/dc_core/modules/dc_config/images/login-background.jpg'
+logo:
+  use_default: '1'
+  path: ''

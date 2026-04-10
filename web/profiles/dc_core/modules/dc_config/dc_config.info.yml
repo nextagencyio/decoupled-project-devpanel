@@ -1,0 +1,8 @@
+name: 'Decoupled Drupal Configuration Helper'
+type: module
+description: 'Provides configuration instructions and OAuth credentials for Decoupled Drupal integration'
+core_version_requirement: ^10 || ^11
+package: Decoupled
+dependencies:
+  - simple_oauth
+  - consumers

@@ -1,0 +1,12 @@
+name: 'Decoupled Drupal Usage'
+type: module
+description: 'Provides usage statistics and tracking for Decoupled Drupal spaces'
+core_version_requirement: ^9 || ^10 || ^11
+package: Decoupled
+required: true
+dependencies:
+  - drupal:system
+  - drupal:node
+  - drupal:user
+  - drupal:file
+  - drupal:jsonapi

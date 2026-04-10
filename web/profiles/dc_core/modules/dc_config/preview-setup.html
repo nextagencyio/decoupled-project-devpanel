@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview Setup Required</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #1e293b;
+            background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%);
+            min-height: 100vh;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            max-width: 800px;
+            width: 95%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .header {
+            margin-bottom: 1rem;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .content-left {
+            flex: 1;
+        }
+
+        .content-right {
+            flex: 1;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            letter-spacing: -0.025em;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin: 0 0 0.75rem 0;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .status-alert {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            border: 1px solid #8B5CF6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .alert-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            color: #5b21b6;
+            font-weight: 500;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+
+        .description {
+            color: #64748b;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .steps-section {
+            background: linear-gradient(135deg, #faf5ff, #f5f3ff);
+            border: 1px solid #e9d5ff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        .steps-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .steps-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .steps-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .steps-list li:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.8rem;
+            margin-bottom: 0.125rem;
+        }
+
+        .step-detail {
+            font-size: 0.75rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .step-example {
+            font-family: 'Monaco', 'Consolas', monospace;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.125rem 0.375rem;
+            border-radius: 3px;
+            display: inline-block;
+            margin-top: 0.125rem;
+            font-size: 0.7rem;
+        }
+
+        .action-button {
+            background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            margin-top: 0.75rem;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+            color: white;
+        }
+
+        .button-icon {
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .content-card {
+                padding: 1.5rem;
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .main-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .logo-text {
+                font-size: 1.25rem;
+            }
+
+            h1 {
+                font-size: 1.25rem;
+            }
+
+            .status-alert {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .alert-content {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content-card">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                        <defs>
+                            <linearGradient id="cloudGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#8B5CF6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"
+                              fill="none"
+                              stroke="url(#cloudGradient)"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="logo-text">Decoupled Drupal</div>
+            </div>
+            <h1>Preview Setup Required</h1>
+        </div>
+
+        <div class="main-content">
+            <div class="content-left">
+                <div class="status-alert">
+                    <div class="alert-icon">⚠️</div>
+                    <div class="alert-content">
+                        <strong>Preview environment not configured.</strong><br>
+                        Configure your Next.js frontend to enable content previews.
+                    </div>
+                </div>
+
+                <div class="description">
+                    Content preview allows editors to see how their draft content will look on your Next.js frontend before publishing.
+                </div>
+
+                <div style="text-align: center; margin-top: 1rem;">
+                    <a href="/admin/config/decoupled_preview_iframe/settings" class="action-button" target="_top">
+                        <span class="button-icon">⚙️</span>
+                        Configure Preview Settings
+                    </a>
+                </div>
+            </div>
+
+            <div class="content-right">
+                <div class="steps-section">
+                    <div class="steps-title">
+                        <span>📋</span>
+                        Quick Setup Steps
+                    </div>
+                    <ul class="steps-list">
+                        <li>
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">Go to Configuration → Decoupled Preview Iframe</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">Update Preview URL to your Next.js URL</div>
+                                <div class="step-detail">
+                                    <div class="step-example">http://host.docker.internal:3000</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">Update Redirect URL to your Next.js URL</div>
+                                <div class="step-detail">
+                                    <div class="step-example">http://host.docker.internal:3000</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <div class="step-title">Save configuration</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

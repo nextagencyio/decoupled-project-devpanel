@@ -1,0 +1,6 @@
+dc_puck.config_form:
+  title: 'Design Studio'
+  description: 'Configure the Puck visual editor, enable content types, and set the editor URL'
+  parent: decoupled.admin_category
+  route_name: dc_puck.config_form
+  weight: 5

@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node_default
+label: 'Default node URL alias'
+type: 'canonical_entities:node'
+pattern: '[node:title]'
+selection_logic: and
+selection_criteria: {}

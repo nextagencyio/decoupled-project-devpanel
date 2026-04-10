@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Dc Revalidate module hooks.
+ */
+
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_node_update().
+ */
+function dc_revalidate_node_update(NodeInterface $node) {
+  _dc_revalidate_trigger_revalidation($node);
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function dc_revalidate_node_insert(NodeInterface $node) {
+  _dc_revalidate_trigger_revalidation($node);
+}
+
+/**
+ * Helper function to trigger revalidation for a node.
+ *
+ * @param \Drupal\node\NodeInterface $node
+ *   The node to revalidate.
+ */
+function _dc_revalidate_trigger_revalidation(NodeInterface $node) {
+  // Only trigger revalidation for published nodes.
+  if (!$node->isPublished()) {
+    return;
+  }
+
+  /** @var \Drupal\dc_revalidate\Service\RevalidationService $revalidation_service */
+  $revalidation_service = \Drupal::service('dc_revalidate.revalidation_service');
+  $revalidation_service->revalidateNode($node);
+}

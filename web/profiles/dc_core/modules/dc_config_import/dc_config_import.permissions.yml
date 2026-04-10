@@ -1,0 +1,4 @@
+import drupal configuration:
+  title: 'Import Drupal Configuration'
+  description: 'Allow importing Drupal configuration YAML via the REST API.'
+  restrict access: true

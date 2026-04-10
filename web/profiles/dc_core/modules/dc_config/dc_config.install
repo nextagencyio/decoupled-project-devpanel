@@ -1,0 +1,90 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the DC Config module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function dc_config_install() {
+  // Run after gin_login (weight 0) so our preprocess_page overrides its values.
+  module_set_weight('dc_config', 10);
+  // Configure Gin theme settings
+  $gin_config = \Drupal::configFactory()->getEditable('gin.settings');
+  $gin_config->set('preset_accent_color', 'dark_purple');
+  $gin_config->set('preset_focus_color', 'gin');
+  $gin_config->set('enable_darkmode', '0');
+  $gin_config->set('classic_toolbar', 'vertical');
+  $gin_config->set('secondary_toolbar_frontend', true);
+  $gin_config->set('logo.use_default', false);
+  $gin_config->set('logo.path', 'profiles/dc_core/modules/dc_config/images/logo.svg');
+  $gin_config->set('favicon.use_default', false);
+  $gin_config->set('favicon.path', 'profiles/dc_core/modules/dc_config/images/favicon.svg');
+  $gin_config->set('high_contrast_mode', false);
+  $gin_config->set('layout_density', 'default');
+  $gin_config->set('show_description_toggle', false);
+  $gin_config->set('show_user_theme_settings', false);
+  $gin_config->set('sticky_action_buttons', false);
+  $gin_config->set('third_party_settings.shortcut.module_link', true);
+  $gin_config->save();
+
+  // Configure Gin Login settings
+  $gin_login_config = \Drupal::configFactory()->getEditable('gin_login.settings');
+  $gin_login_config->set('logo.use_default', false);
+  $gin_login_config->set('logo.path', 'profiles/dc_core/modules/dc_config/images/logo.svg');
+  $gin_login_config->set('brand_image.use_default', '0');
+  $gin_login_config->set('brand_image.path', 'profiles/dc_core/modules/dc_config/images/login-background.jpg');
+  $gin_login_config->save();
+
+  // Set homepage to /dc-config
+  $site_config = \Drupal::configFactory()->getEditable('system.site');
+  $site_config->set('page.front', '/dc-config');
+  $site_config->save();
+
+  \Drupal::messenger()->addStatus(t('Decoupled Drupal configuration has been applied successfully!'));
+}
+
+/**
+ * Update Gin Login brand image to use custom background.
+ */
+function dc_config_update_9001() {
+  $gin_login_config = \Drupal::configFactory()->getEditable('gin_login.settings');
+  $gin_login_config->set('brand_image.use_default', '0');
+  $gin_login_config->set('brand_image.path', 'profiles/dc_core/modules/dc_config/images/login-background.jpg');
+  $gin_login_config->save();
+
+  return t('Updated Gin Login brand image to use custom background.');
+}
+
+/**
+ * Update Gin theme to use custom favicon.
+ */
+function dc_config_update_9002() {
+  $gin_config = \Drupal::configFactory()->getEditable('gin.settings');
+  $gin_config->set('favicon.use_default', false);
+  $gin_config->set('favicon.path', 'profiles/dc_core/modules/dc_config/images/favicon.svg');
+  $gin_config->save();
+
+  return t('Updated Gin theme to use custom favicon.');
+}
+
+/**
+ * Update Gin theme accent color to dark purple.
+ */
+function dc_config_update_9003() {
+  $gin_config = \Drupal::configFactory()->getEditable('gin.settings');
+  $gin_config->set('preset_accent_color', 'dark_purple');
+  $gin_config->save();
+
+  return t('Updated Gin theme accent color to dark purple.');
+}
+
+/**
+ * Set module weight so dc_config preprocess runs after gin_login.
+ */
+function dc_config_update_9004() {
+  module_set_weight('dc_config', 10);
+  return t('Set dc_config module weight to 10 (runs after gin_login).');
+}

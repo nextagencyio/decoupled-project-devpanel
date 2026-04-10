@@ -1,0 +1,71 @@
+dc_puck.validate_token:
+  path: '/api/puck/validate-token'
+  defaults:
+    _controller: '\Drupal\dc_puck\Controller\TokenController::validate'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+
+dc_puck.load:
+  path: '/api/puck/load/{node}'
+  defaults:
+    _controller: '\Drupal\dc_puck\Controller\PuckDataController::load'
+  requirements:
+    _access: 'TRUE'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node
+  methods: [GET]
+
+dc_puck.save:
+  path: '/api/puck/save/{node}'
+  defaults:
+    _controller: '\Drupal\dc_puck\Controller\PuckDataController::save'
+  requirements:
+    _access: 'TRUE'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node
+  methods: [POST]
+
+dc_puck.mapping:
+  path: '/api/puck/mapping'
+  defaults:
+    _controller: '\Drupal\dc_puck\Controller\PuckDataController::mapping'
+  requirements:
+    _access: 'TRUE'
+  methods: [GET]
+
+dc_puck.configure_api:
+  path: '/api/puck/configure'
+  defaults:
+    _controller: '\Drupal\dc_puck\Controller\PuckDataController::configure'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+
+dc_puck.generate_token:
+  path: '/api/puck/token/{node}'
+  defaults:
+    _controller: '\Drupal\dc_puck\Controller\TokenController::generate'
+  requirements:
+    _permission: 'access content'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node
+  methods: [GET]
+
+dc_puck.config_form:
+  path: '/admin/config/dc-puck'
+  defaults:
+    _form: '\Drupal\dc_puck\Form\PuckMappingForm'
+    _title: 'Puck Editor Settings'
+  requirements:
+    _permission: 'administer site configuration'
+

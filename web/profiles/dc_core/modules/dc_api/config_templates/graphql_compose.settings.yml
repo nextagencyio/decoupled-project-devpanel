@@ -1,0 +1,110 @@
+entity_config:
+  image_style:
+    large:
+      enabled: true
+    media_library:
+      enabled: true
+    medium:
+      enabled: true
+    thumbnail:
+      enabled: true
+    wide:
+      enabled: true
+  menu:
+    account:
+      enabled: false
+    admin:
+      enabled: false
+    footer:
+      enabled: false
+    main:
+      enabled: true
+    tools:
+      enabled: false
+  node:
+    article:
+      enabled: true
+      query_load_enabled: true
+      edges_enabled: true
+      routes_enabled: true
+    homepage:
+      enabled: true
+      query_load_enabled: true
+      edges_enabled: true
+      routes_enabled: true
+    page:
+      enabled: true
+      query_load_enabled: true
+      edges_enabled: true
+      routes_enabled: true
+  paragraph:
+    feature_item:
+      enabled: true
+      query_load_enabled: true
+  taxonomy_term:
+    tags:
+      enabled: true
+      query_load_enabled: true
+      edges_enabled: true
+  user:
+    user:
+      enabled: true
+      query_load_enabled: true
+field_config:
+  node:
+    article:
+      body:
+        enabled: true
+      field_image:
+        enabled: true
+      field_tags:
+        enabled: true
+    homepage:
+      field_cta_description:
+        enabled: true
+      field_cta_primary:
+        enabled: true
+      field_cta_secondary:
+        enabled: true
+      field_cta_title:
+        enabled: true
+      field_features_items:
+        enabled: true
+      field_features_subtitle:
+        enabled: true
+      field_features_title:
+        enabled: true
+      field_hero_description:
+        enabled: true
+      field_hero_subtitle:
+        enabled: true
+      field_hero_title:
+        enabled: true
+      field_primary_cta:
+        enabled: true
+      field_secondary_cta:
+        enabled: true
+    page:
+      body:
+        enabled: true
+  paragraph:
+    feature_item:
+      field_feature_description:
+        enabled: true
+      field_feature_icon:
+        enabled: true
+      field_feature_title:
+        enabled: true
+settings:
+  exclude_unpublished: true
+  expose_entity_ids: true
+  field_required_override: false
+  schema_description: 'Decoupled Drupal GraphQL API'
+  schema_version: '1.0'
+  simple_queries: true
+  simple_unions: true
+  site_name: true
+  site_slogan: true
+  site_front: true
+  inflector_langcode: en
+  inflector_singularize: true

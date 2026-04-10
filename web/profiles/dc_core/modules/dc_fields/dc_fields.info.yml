@@ -1,0 +1,11 @@
+name: 'Decoupled Drupal Base'
+type: module
+description: 'Base configurations for Decoupled Drupal: text formats, editors, and tags vocabulary'
+package: Decoupled
+core_version_requirement: ^11
+version: 1.0.0
+dependencies:
+  - drupal:node
+  - drupal:ckeditor5
+  - drupal:filter
+  - drupal:taxonomy

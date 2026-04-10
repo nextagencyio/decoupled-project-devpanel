@@ -1,0 +1,13 @@
+hooks:
+  git_hooks:
+    push:
+      - branch: "main"
+        cmd: |-
+          cd $APP_ROOT && composer -n install --no-dev --optimize-autoloader >> /tmp/composer_main.txt
+          cd $APP_ROOT && drush updatedb -y >> /tmp/updb_main.txt
+          cd $APP_ROOT && drush cache:rebuild >> /tmp/cr_main.txt
+      - branch: "develop"
+        cmd: |-
+          cd $APP_ROOT && composer -n install >> /tmp/composer_develop.txt
+          cd $APP_ROOT && drush updatedb -y >> /tmp/updb_develop.txt
+          cd $APP_ROOT && drush cache:rebuild >> /tmp/cr_develop.txt

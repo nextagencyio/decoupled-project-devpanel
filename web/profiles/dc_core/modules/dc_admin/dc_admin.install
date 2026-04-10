@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the dc_admin module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function dc_admin_install() {
+  // Install the Gin theme.
+  \Drupal::service('theme_installer')->install(['gin']);
+
+  // Set Gin as both default and admin theme.
+  \Drupal::configFactory()->getEditable('system.theme')
+    ->set('default', 'gin')
+    ->set('admin', 'gin')
+    ->save();
+
+  // Configure node settings to use admin theme.
+  \Drupal::configFactory()->getEditable('node.settings')
+    ->set('use_admin_theme', TRUE)
+    ->save();
+}

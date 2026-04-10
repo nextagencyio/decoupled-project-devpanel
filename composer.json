@@ -1,0 +1,118 @@
+{
+    "name": "nextagencyio/decoupled-project",
+    "description": "Decoupled Drupal template with GraphQL, OAuth, and Next.js integration for headless CMS development",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://github.com/nextagencyio/decoupled-project",
+    "support": {
+        "docs": "https://github.com/nextagencyio/decoupled-project/blob/main/README.md",
+        "issues": "https://github.com/nextagencyio/decoupled-project/issues"
+    },
+    "keywords": [
+        "drupal",
+        "headless",
+        "graphql",
+        "nextjs",
+        "oauth",
+        "cms",
+        "api"
+    ],
+    "authors": [
+        {
+            "name": "Next Agency",
+            "homepage": "https://nextagency.io"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://git.drupalcode.org/issue/simple_oauth-3532181.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://git.drupalcode.org/issue/decoupled_preview_iframe-3543929.git"
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+    ],
+    "require": {
+        "composer/installers": "^2.3",
+        "cweagans/composer-patches": "^2.0",
+        "drupal/admin_toolbar": "^3.4",
+        "drupal/admin_toolbar_tools": "^3.4",
+        "drupal/cms_content_sync": "^3.2",
+        "drupal/core-composer-scaffold": "^11.2",
+        "drupal/core-recommended": "^11.2",
+        "drupal/decoupled_preview_iframe": "dev-3543929-drupal-11-fixes",
+        "drupal/field_group": "^3.6",
+        "drupal/gin": "^5.0",
+        "drupal/gin_login": "^2.1",
+        "drupal/gin_toolbar": "^3.0",
+        "drupal/graphql": "^4.7",
+        "drupal/graphql_compose": "^2.2",
+        "drupal/graphql_compose_preview": "^1.1",
+        "drupal/paragraphs": "^1.18",
+        "drupal/pathauto": "^1.13",
+        "drupal/redis": "^1.8",
+        "drupal/simple_oauth": "5.2.x-dev#aa4a3566c2ff156b1dde5eea4b4896bb7a880127",
+        "drush/drush": "^13.6"
+    },
+    "conflict": {
+        "drupal/drupal": "*"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "drupal/core-composer-scaffold": true,
+            "php-http/discovery": true,
+            "php-tuf/composer-integration": true,
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "drupal-scaffold": {
+            "locations": {
+                "web-root": "web/"
+            }
+        },
+        "installer-paths": {
+            "web/core": [
+                "type:drupal-core"
+            ],
+            "web/libraries/{$name}": [
+                "type:drupal-library"
+            ],
+            "web/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "web/profiles/contrib/{$name}": [
+                "type:drupal-profile"
+            ],
+            "web/themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ],
+            "drush/Commands/contrib/{$name}": [
+                "type:drupal-drush"
+            ],
+            "web/modules/custom/{$name}": [
+                "type:drupal-custom-module"
+            ],
+            "web/profiles/custom/{$name}": [
+                "type:drupal-custom-profile"
+            ],
+            "web/themes/custom/{$name}": [
+                "type:drupal-custom-theme"
+            ],
+            "recipes/{$name}": [
+                "type:drupal-recipe"
+            ]
+        }
+    }
+}

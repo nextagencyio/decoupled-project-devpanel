@@ -1,0 +1,11 @@
+cache:
+  page:
+    max_age: 86400
+css:
+  preprocess: true
+  gzip: true
+js:
+  preprocess: true
+  gzip: true
+response:
+  gzip: true

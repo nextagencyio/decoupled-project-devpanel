@@ -1,0 +1,53 @@
+dc_import.admin_import:
+  path: '/admin/content/import'
+  defaults:
+    _form: '\Drupal\dc_import\Form\ImportForm'
+    _title: 'Import Content'
+  requirements:
+    _permission: 'administer dc_import'
+
+dc_import.api_import:
+  path: '/api/dc-import'
+  defaults:
+    _controller: '\Drupal\dc_import\Controller\ImportApiController::import'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+
+dc_import.api_test:
+  path: '/dc-test'
+  defaults:
+    _controller: '\Drupal\dc_import\Controller\ImportApiController::status'
+  requirements:
+    _access: 'TRUE'
+
+dc_import.api_status:
+  path: '/api/dc-import/status'
+  defaults:
+    _controller: '\Drupal\dc_import\Controller\ImportApiController::status'
+  requirements:
+    _access: 'TRUE'
+
+dc_import.api_oauth_credentials:
+  path: '/api/dc-import/oauth-credentials'
+  defaults:
+    _controller: '\Drupal\dc_import\Controller\ImportApiController::getOAuthCredentials'
+  requirements:
+    _access: 'TRUE'
+  methods: [GET]
+
+dc_import.api_mcp_credentials:
+  path: '/api/dc-import/mcp-credentials'
+  defaults:
+    _controller: '\Drupal\dc_import\Controller\ImportApiController::getMcpCredentials'
+  requirements:
+    _access: 'TRUE'
+  methods: [GET]
+
+dc_import.api_set_token:
+  path: '/api/dc-import/set-token'
+  defaults:
+    _controller: '\Drupal\dc_import\Controller\ImportApiController::setToken'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]

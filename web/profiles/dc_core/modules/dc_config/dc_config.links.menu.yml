@@ -1,0 +1,12 @@
+decoupled.admin_category:
+  title: 'Decoupled Drupal'
+  description: 'Decoupled Drupal integration and configuration'
+  parent: system.admin_config
+  route_name: decoupled.admin_category
+  weight: -10
+
+dc_config.admin:
+  title: 'Configuration'
+  description: 'Configure Decoupled Drupal integration settings and view OAuth credentials'
+  parent: decoupled.admin_category
+  route_name: dc_config.admin

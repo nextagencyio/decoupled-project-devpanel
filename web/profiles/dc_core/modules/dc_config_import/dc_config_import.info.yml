@@ -1,0 +1,7 @@
+name: Decoupled Drupal Config Import
+description: 'REST API for importing Drupal configuration from YAML.'
+type: module
+core_version_requirement: ^10 || ^11
+package: Decoupled
+dependencies:
+  - drupal:system

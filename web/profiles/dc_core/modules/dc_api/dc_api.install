@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the dc_api module.
+ */
+
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Implements hook_install().
+ */
+function dc_api_install() {
+  // Get the module path and config templates directory.
+  $module_path = \Drupal::service('extension.list.module')->getPath('dc_api');
+  $config_path = $module_path . '/config_templates';
+
+  // Create a file storage object for the config templates directory.
+  $source = new FileStorage($config_path);
+
+  // List of configs to update (these already exist from module installation).
+  $configs_to_update = [
+    'decoupled_preview_iframe.settings',
+    'graphql.graphql_servers.graphql_compose_server',
+    'graphql_compose.settings',
+  ];
+
+  // Update each configuration.
+  foreach ($configs_to_update as $config_name) {
+    $config_data = $source->read($config_name);
+    if ($config_data) {
+      \Drupal::configFactory()
+        ->getEditable($config_name)
+        ->setData($config_data)
+        ->save();
+    }
+  }
+}

@@ -1,0 +1,4 @@
+services:
+  dc_config_import.importer:
+    class: Drupal\dc_config_import\Service\DrupalConfigImporter
+    arguments: ['@config.factory']

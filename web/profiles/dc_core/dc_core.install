@@ -1,0 +1,808 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the dc_core installation profile.
+ */
+
+use Drupal\consumers\Entity\Consumer;
+use Drupal\user\Entity\Role;
+use Drupal\Component\Utility\Crypt;
+use Drupal\Component\Utility\Random;
+
+/**
+ * Implements hook_install().
+ */
+function dc_core_install() {
+  // 1. Configure mail system to use Resend HTTP API
+  _dc_core_configure_mail_system();
+
+  // 2. Generate OAuth2 RSA keypair for JWT token signing
+  _dc_core_generate_oauth_keys();
+
+  // 3. Create OAuth consumers for Next.js frontend authentication.
+  // Delete existing consumers before creating new ones to avoid conflicts.
+  $random = new Random();
+  $consumerStorage = \Drupal::entityTypeManager()->getStorage('consumer');
+
+  $existing_consumers = $consumerStorage->loadByProperties([
+    'label' => ['Next.js Frontend', 'Next.js Viewer']
+  ]);
+  foreach ($existing_consumers as $consumer) {
+    $consumer->delete();
+    \Drupal::logger('dc_core')->notice('Deleted existing consumer: ' . $consumer->label());
+  }
+
+  // Generate random OAuth credentials for Next.js Frontend (Previewer)
+  $previewerClientId = Crypt::randomBytesBase64();
+  $previewerClientSecret = $random->word(8);
+
+  $previewerData = [
+    'client_id' => $previewerClientId,
+    'client_secret' => $previewerClientSecret,
+    'label' => 'Next.js Frontend',
+    'user_id' => 1,
+    'third_party' => TRUE,
+    'is_default' => FALSE,
+  ];
+
+  $consumerStorage->create($previewerData)->save();
+
+  // Generate random OAuth credentials for Next.js Viewer
+  $viewerClientId = Crypt::randomBytesBase64();
+  $viewerClientSecret = $random->word(8);
+
+  $viewerData = [
+    'client_id' => $viewerClientId,
+    'client_secret' => $viewerClientSecret,
+    'label' => 'Next.js Viewer',
+    'user_id' => 1,
+    'third_party' => TRUE,
+    'is_default' => FALSE,
+  ];
+
+  $consumerStorage->create($viewerData)->save();
+
+  \Drupal::logger('dc_core')->notice('Created OAuth consumers with random credentials.');
+  \Drupal::logger('dc_core')->notice('Next.js Frontend - DRUPAL_CLIENT_ID=' . $previewerClientId);
+  \Drupal::logger('dc_core')->notice('Next.js Frontend - DRUPAL_CLIENT_SECRET=' . $previewerClientSecret);
+  \Drupal::logger('dc_core')->notice('Next.js Viewer - DRUPAL_CLIENT_ID=' . $viewerClientId);
+  \Drupal::logger('dc_core')->notice('Next.js Viewer - DRUPAL_CLIENT_SECRET=' . $viewerClientSecret);
+
+  // 3. Grant GraphQL permissions to anonymous users (needed for OAuth)
+  $role = Role::load('anonymous');
+  if ($role) {
+    $role->grantPermission('execute graphql_compose_server arbitrary graphql requests');
+    $role->save();
+    \Drupal::logger('dc_core')->notice('Granted GraphQL permissions to anonymous role.');
+  }
+
+  // 4. Configure mail system to use Resend HTTP API.
+  _dc_core_configure_mail_system();
+}
+
+/**
+ * Helper function to configure the chatbot settings.
+ */
+function _dc_core_configure_chatbot() {
+  // Check if dc_chatbot module is enabled.
+  $moduleHandler = \Drupal::service('module_handler');
+  if (!$moduleHandler->moduleExists('dc_chatbot')) {
+    \Drupal::logger('dc_core')->notice('Skipped chatbot configuration: dc_chatbot module not enabled.');
+    return;
+  }
+
+  // Detect environment and set appropriate API URL.
+  $request = \Drupal::request();
+  $host = $request->getHost();
+  
+  // Local development: use localhost URLs.
+  $is_local = (
+    strpos($host, 'localhost') !== FALSE || 
+    strpos($host, '.ddev.site') !== FALSE ||
+    strpos($host, '127.0.0.1') !== FALSE
+  );
+  
+  $api_url = $is_local 
+    ? 'http://host.docker.internal:3333/api/chatbot'
+    : 'https://dashboard.decoupled.io/api/chatbot';
+  
+  // Configure chatbot settings.
+  $config = \Drupal::configFactory()->getEditable('dc_chatbot.settings');
+  $config->set('enabled', TRUE);
+  $config->set('api_url', $api_url);
+  // API key will be set by the dashboard via webhook after installation.
+  $config->save();
+
+  \Drupal::logger('dc_core')->notice('Configured chatbot with API URL: ' . $api_url);
+}
+
+/**
+ * Helper function to place the chatbot block in the Gin theme.
+ */
+function _dc_core_place_chatbot_block() {
+  // Check if dc_chatbot module is enabled.
+  $moduleHandler = \Drupal::service('module_handler');
+  if (!$moduleHandler->moduleExists('dc_chatbot')) {
+    \Drupal::logger('dc_core')->notice('Skipped chatbot block placement: dc_chatbot module not enabled.');
+    return;
+  }
+
+  // Check if Gin theme is installed.
+  $themeHandler = \Drupal::service('theme_handler');
+  if (!$themeHandler->themeExists('gin')) {
+    \Drupal::logger('dc_core')->notice('Skipped chatbot block placement: Gin theme not installed.');
+    return;
+  }
+
+  // Create the chatbot block for Gin theme.
+  $block_storage = \Drupal::entityTypeManager()->getStorage('block');
+  
+  // Check if the block already exists.
+  $existing_block = $block_storage->loadByProperties([
+    'plugin' => 'dc_chatbot_block',
+    'theme' => 'gin',
+  ]);
+
+  if (!empty($existing_block)) {
+    \Drupal::logger('dc_core')->notice('Chatbot block already exists in Gin theme.');
+    return;
+  }
+
+  // Create the block.
+  $block = $block_storage->create([
+    'id' => 'gin_dc_chatbot',
+    'plugin' => 'dc_chatbot_block',
+    'region' => 'content',
+    'theme' => 'gin',
+    'weight' => 100,
+    'settings' => [
+      'label' => 'Decoupled Drupal Chatbot',
+      'label_display' => '0',
+      'button_text' => 'Chat with us',
+      'button_position' => 'bottom-right',
+      'button_color' => '#007cba',
+      'show_on_mobile' => TRUE,
+      'trigger_delay' => 0,
+    ],
+    'visibility' => [],
+  ]);
+
+  $block->save();
+
+  \Drupal::logger('dc_core')->notice('Placed Decoupled Drupal Chatbot block in Gin theme.');
+}
+
+/**
+ * Helper function to configure the mail system to use Resend HTTP API.
+ */
+function _dc_core_configure_mail_system() {
+  // Configure Drupal to use Resend HTTP API for all emails.
+  $config = \Drupal::configFactory()->getEditable('system.mail');
+  $config->set('interface.default', 'resend_mail');
+  $config->save();
+  
+  \Drupal::logger('dc_core')->notice('Configured mail system to use Resend HTTP API (dc_mail module).');
+}
+
+/**
+ * Helper function to generate OAuth2 RSA keypair.
+ */
+function _dc_core_generate_oauth_keys() {
+  $request = \Drupal::request();
+  $site_path = \Drupal\Core\DrupalKernel::findSitePath($request);
+
+  // Use Drupal's standard private files directory
+  $private_path = DRUPAL_ROOT . '/' . $site_path . '/files/private/oauth';
+
+  // Ensure private directory exists and is writable
+  if (!is_dir($private_path)) {
+    mkdir($private_path, 0755, TRUE);
+  }
+
+  // Configure OAuth settings with relative key paths (critical for simple_oauth)
+  $config = \Drupal::configFactory()->getEditable('simple_oauth.settings');
+  $config->set('public_key', $site_path . '/files/private/oauth/public.key');
+  $config->set('private_key', $site_path . '/files/private/oauth/private.key');
+  $config->save();
+
+  \Drupal::logger('dc_core')->notice('OAuth key paths configured: ' . $site_path . '/files/private/oauth/');
+
+  // Generate keys if private path is writable and keys don't exist
+  if (is_writable($private_path)) {
+    $public_key_path = $private_path . '/public.key';
+    $private_key_path = $private_path . '/private.key';
+
+    if (!file_exists($private_key_path) || !file_exists($public_key_path)) {
+      try {
+        // Use Drupal's simple_oauth key generator service
+        \Drupal::service('simple_oauth.key.generator')->generateKeys($private_path);
+        \Drupal::logger('dc_core')->notice('OAuth keys generated successfully in ' . $private_path);
+
+        // Fix permissions - keys are created with 0600 but need to be readable by PHP
+        if (file_exists($private_key_path)) {
+          chmod($private_key_path, 0644);
+        }
+        if (file_exists($public_key_path)) {
+          chmod($public_key_path, 0644);
+        }
+        \Drupal::logger('dc_core')->notice('OAuth key permissions set to 0644');
+      }
+      catch (Exception $e) {
+        \Drupal::logger('dc_core')->error('Error generating OAuth keys: ' . $e->getMessage());
+      }
+    }
+    else {
+      \Drupal::logger('dc_core')->notice('OAuth keys already exist in ' . $private_path);
+    }
+  }
+}
+
+/**
+ * Disable the hello_world module.
+ */
+function dc_core_update_10001() {
+  \Drupal::service('module_installer')->uninstall(['hello_world']);
+  return t('Disabled hello_world module.');
+}
+
+/**
+ * Test update hook to verify automated deployments run drush updatedb.
+ */
+function dc_core_update_10002() {
+  \Drupal::logger('dc_core')->notice('Test update hook 10002 executed successfully via automated deployment!');
+  return t('Test update hook executed - automated drush updatedb is working!');
+}
+
+/**
+ * Update preview iframe URLs to dc_core profile location.
+ */
+function dc_core_update_10003() {
+  $config = \Drupal::configFactory()->getEditable('decoupled_preview_iframe.settings');
+
+  if ($config->isNew()) {
+    return t('Decoupled preview iframe not configured, skipping.');
+  }
+
+  $old_path = '/modules/custom/dc_config/preview-setup.html?';
+  $new_path = '/profiles/dc_core/modules/dc_config/preview-setup.html?';
+
+  $redirect_url = $config->get('redirect_url');
+  $preview_url = $config->get('preview_url');
+
+  $updated = FALSE;
+
+  if ($redirect_url === $old_path) {
+    $config->set('redirect_url', $new_path);
+    $updated = TRUE;
+  }
+
+  if ($preview_url === $old_path) {
+    $config->set('preview_url', $new_path);
+    $updated = TRUE;
+  }
+
+  if ($updated) {
+    $config->save();
+    return t('Updated preview iframe URLs to dc_core profile location.');
+  }
+
+  return t('Preview iframe URLs already up to date.');
+}
+
+/**
+ * Set homepage to /dc-config.
+ */
+function dc_core_update_10004() {
+  $config = \Drupal::configFactory()->getEditable('system.site');
+  $config->set('page.front', '/dc-config');
+  $config->save();
+  return t('Set homepage to /dc-config.');
+}
+
+/**
+ * Create OAuth consumer for Next.js frontend authentication.
+ */
+function dc_core_update_10005() {
+  // 1. Generate OAuth2 RSA keypair
+  _dc_core_generate_oauth_keys();
+
+  // 2. Create OAuth consumers with random credentials
+  $random = new Random();
+  $consumerStorage = \Drupal::entityTypeManager()->getStorage('consumer');
+
+  // Delete existing consumers before creating new ones
+  $labels_to_delete = ['Next.js Frontend', 'Next.js Viewer'];
+  foreach ($labels_to_delete as $label) {
+    $existing_consumers = $consumerStorage->loadByProperties(['label' => $label]);
+    foreach ($existing_consumers as $consumer) {
+      $consumer->delete();
+    }
+  }
+
+  // Generate random OAuth credentials for Next.js Frontend
+  $previewerClientId = Crypt::randomBytesBase64();
+  $previewerClientSecret = $random->word(8);
+
+  $previewerData = [
+    'client_id' => $previewerClientId,
+    'client_secret' => $previewerClientSecret,
+    'label' => 'Next.js Frontend',
+    'user_id' => 1,
+    'third_party' => TRUE,
+    'is_default' => FALSE,
+  ];
+
+  $consumerStorage->create($previewerData)->save();
+
+  // Generate random OAuth credentials for Next.js Viewer
+  $viewerClientId = Crypt::randomBytesBase64();
+  $viewerClientSecret = $random->word(8);
+
+  $viewerData = [
+    'client_id' => $viewerClientId,
+    'client_secret' => $viewerClientSecret,
+    'label' => 'Next.js Viewer',
+    'user_id' => 1,
+    'third_party' => TRUE,
+    'is_default' => FALSE,
+  ];
+
+  $consumerStorage->create($viewerData)->save();
+
+  \Drupal::logger('dc_core')->notice('Next.js Frontend - DRUPAL_CLIENT_ID=' . $previewerClientId);
+  \Drupal::logger('dc_core')->notice('Next.js Frontend - DRUPAL_CLIENT_SECRET=' . $previewerClientSecret);
+  \Drupal::logger('dc_core')->notice('Next.js Viewer - DRUPAL_CLIENT_ID=' . $viewerClientId);
+  \Drupal::logger('dc_core')->notice('Next.js Viewer - DRUPAL_CLIENT_SECRET=' . $viewerClientSecret);
+
+  // 3. Grant GraphQL permissions to anonymous users
+  $role = Role::load('anonymous');
+  if ($role) {
+    $role->grantPermission('execute graphql_compose_server arbitrary graphql requests');
+    $role->save();
+  }
+
+  return t('Configured OAuth2 authentication for Next.js frontend. Check logs for OAuth credentials.');
+}
+
+/**
+ * TEST UPDATE: Verify deployment pipeline works end-to-end.
+ */
+function dc_core_update_10006() {
+  $timestamp = date('Y-m-d H:i:s');
+  $site_name = \Drupal::config('system.site')->get('name');
+  
+  \Drupal::logger('dc_core')->notice('🚀 TEST UPDATE HOOK 10006 EXECUTED! Site: @site_name at @timestamp', [
+    '@site_name' => $site_name,
+    '@timestamp' => $timestamp,
+  ]);
+  
+  return t('Test update hook 10006 executed successfully! Check logs for confirmation.');
+}
+
+/**
+ * TEST UPDATE 2: Demonstrate LIVE deployment pipeline.
+ * January 9, 2026 - Testing how code updates flow to all sites.
+ */
+function dc_core_update_10007() {
+  $timestamp = date('Y-m-d H:i:s T');
+  $site_name = \Drupal::config('system.site')->get('name');
+  $machine_name = basename($_SERVER['HTTP_HOST'], '.decoupled.website');
+  
+  $message = sprintf(
+    '🎯 UPDATE HOOK 10007 EXECUTED!\nSite: %s (%s)\nTime: %s\nDeployment test successful!',
+    $site_name,
+    $machine_name,
+    $timestamp
+  );
+  
+  \Drupal::logger('dc_core')->notice($message);
+  
+  // Also write to a file so we can easily see which sites ran it.
+  file_put_contents('/tmp/update-10007-executed.txt', $message . "\n", FILE_APPEND);
+  
+  return t('Update hook 10007 executed! Deployment pipeline verified.');
+}
+
+/**
+ * Place the Decoupled Drupal Chatbot block in the Gin theme.
+ */
+function dc_core_update_10008() {
+  _dc_core_place_chatbot_block();
+  return t('Placed Decoupled Drupal Chatbot block in Gin theme (if module enabled).');
+}
+
+/**
+ * Configure the Decoupled Drupal Chatbot settings.
+ */
+function dc_core_update_10009() {
+  _dc_core_configure_chatbot();
+  return t('Configured Decoupled Drupal Chatbot with appropriate API URL (if module enabled).');
+}
+
+/**
+ * Configure mail system to use Resend HTTP API.
+ */
+function dc_core_update_10010() {
+  _dc_core_configure_mail_system();
+  return t('Configured mail system to use Resend HTTP API (dc_mail module).');
+}
+
+/**
+ * Fix mail system configuration for existing sites.
+ */
+function dc_core_update_10011() {
+  // Check if dc_mail module is enabled.
+  $moduleHandler = \Drupal::service('module_handler');
+  if (!$moduleHandler->moduleExists('dc_mail')) {
+    return t('Skipped mail configuration: dc_mail module not enabled.');
+  }
+
+  // Set dc_mail as the default mail system.
+  $config = \Drupal::configFactory()->getEditable('system.mail');
+  $config->set('interface.default', 'resend_mail');
+  $config->save();
+
+  return t('Fixed mail system configuration to use resend_mail (Resend HTTP API).');
+}
+
+/**
+ * Force mail system configuration update (10011 may have been marked as run without executing).
+ */
+function dc_core_update_10012() {
+  // Check if dc_mail module is enabled.
+  $moduleHandler = \Drupal::service('module_handler');
+  if (!$moduleHandler->moduleExists('dc_mail')) {
+    \Drupal::logger('dc_core')->warning('dc_mail module not enabled - cannot configure mail system');
+    return t('Skipped: dc_mail module not enabled.');
+  }
+
+  // Force set dc_mail as the default mail system.
+  $config = \Drupal::configFactory()->getEditable('system.mail');
+  $currentInterface = $config->get('interface.default');
+
+  \Drupal::logger('dc_core')->notice('Current mail interface: @current, setting to resend_mail', [
+    '@current' => $currentInterface ?? 'null',
+  ]);
+
+  $config->set('interface.default', 'resend_mail');
+  $config->save();
+
+  return t('FORCED mail system configuration to resend_mail (was: @old)', [
+    '@old' => $currentInterface ?? 'not set',
+  ]);
+}
+
+/**
+ * Fix OAuth key permissions (keys created with 0600 but need 0644 to be readable).
+ */
+function dc_core_update_10013() {
+  $request = \Drupal::request();
+  $site_path = \Drupal\Core\DrupalKernel::findSitePath($request);
+  $private_path = DRUPAL_ROOT . '/' . $site_path . '/files/private/oauth';
+
+  $private_key_path = $private_path . '/private.key';
+  $public_key_path = $private_path . '/public.key';
+
+  $fixed = [];
+
+  if (file_exists($private_key_path)) {
+    $current_perms = fileperms($private_key_path) & 0777;
+    if ($current_perms !== 0644) {
+      chmod($private_key_path, 0644);
+      $fixed[] = 'private.key';
+    }
+  }
+
+  if (file_exists($public_key_path)) {
+    $current_perms = fileperms($public_key_path) & 0777;
+    if ($current_perms !== 0644) {
+      chmod($public_key_path, 0644);
+      $fixed[] = 'public.key';
+    }
+  }
+
+  if (empty($fixed)) {
+    return t('OAuth key permissions already correct.');
+  }
+
+  return t('Fixed permissions on OAuth keys: @keys', [
+    '@keys' => implode(', ', $fixed),
+  ]);
+}
+
+/**
+ * Enable graphql_compose_preview module for draft preview support.
+ */
+function dc_core_update_10015() {
+  $module_installer = \Drupal::service('module_installer');
+  $module_handler = \Drupal::service('module_handler');
+
+  if ($module_handler->moduleExists('graphql_compose_preview')) {
+    return t('graphql_compose_preview already enabled.');
+  }
+
+  try {
+    $module_installer->install(['graphql_compose_preview']);
+    \Drupal::logger('dc_core')->notice('Enabled graphql_compose_preview module.');
+    return t('Enabled graphql_compose_preview module for draft preview support.');
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('dc_core')->error('Failed to enable graphql_compose_preview: @error', [
+      '@error' => $e->getMessage(),
+    ]);
+    return t('Failed to enable graphql_compose_preview: @error', [
+      '@error' => $e->getMessage(),
+    ]);
+  }
+}
+
+/**
+ * Clear preview iframe redirect_url placeholder on existing sites.
+ */
+function dc_core_update_10016() {
+  $config = \Drupal::configFactory()->getEditable('decoupled_preview_iframe.settings');
+
+  if ($config->isNew()) {
+    return t('Decoupled preview iframe not configured, skipping.');
+  }
+
+  $redirect_url = $config->get('redirect_url');
+  $preview_url = $config->get('preview_url');
+  $updated = FALSE;
+
+  // Clear redirect_url if it points to the old preview-setup placeholder.
+  if (!empty($redirect_url) && strpos($redirect_url, 'preview-setup.html') !== FALSE) {
+    $config->set('redirect_url', '');
+    $updated = TRUE;
+  }
+
+  // Clear preview_url if it points to the old preview-setup placeholder.
+  if (!empty($preview_url) && strpos($preview_url, 'preview-setup.html') !== FALSE) {
+    $config->set('preview_url', '');
+    $updated = TRUE;
+  }
+
+  if ($updated) {
+    $config->save();
+    return t('Cleared preview iframe placeholder URLs.');
+  }
+
+  return t('Preview iframe URLs already configured by user, no changes made.');
+}
+
+/**
+ * Enable dc_config_import module for config import via MCP.
+ */
+function dc_core_update_10017() {
+  $module_installer = \Drupal::service('module_installer');
+  $module_handler = \Drupal::service('module_handler');
+
+  if ($module_handler->moduleExists('dc_config_import')) {
+    return t('dc_config_import already enabled.');
+  }
+
+  try {
+    $module_installer->install(['dc_config_import']);
+    \Drupal::logger('dc_core')->notice('Enabled dc_config_import module.');
+
+    // Grant permission to previewer role.
+    $role = Role::load('previewer');
+    if ($role && !$role->hasPermission('import drupal configuration')) {
+      $role->grantPermission('import drupal configuration');
+      $role->save();
+      \Drupal::logger('dc_core')->notice('Granted "import drupal configuration" permission to previewer role.');
+    }
+
+    return t('Enabled dc_config_import module and granted permissions.');
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('dc_core')->error('Failed to enable dc_config_import: @error', [
+      '@error' => $e->getMessage(),
+    ]);
+    return t('Failed to enable dc_config_import: @error', [
+      '@error' => $e->getMessage(),
+    ]);
+  }
+}
+
+/**
+ * Enable page_cache and dynamic_page_cache modules, set max-age to 1 day.
+ */
+function dc_core_update_10018() {
+  $module_installer = \Drupal::service('module_installer');
+  $module_handler = \Drupal::service('module_handler');
+  $messages = [];
+
+  $modules = ['page_cache', 'dynamic_page_cache'];
+  foreach ($modules as $module) {
+    if (!$module_handler->moduleExists($module)) {
+      try {
+        $module_installer->install([$module]);
+        $messages[] = t('Enabled @module.', ['@module' => $module]);
+      }
+      catch (\Exception $e) {
+        $messages[] = t('Failed to enable @module: @error', [
+          '@module' => $module,
+          '@error' => $e->getMessage(),
+        ]);
+      }
+    }
+    else {
+      $messages[] = t('@module already enabled.', ['@module' => $module]);
+    }
+  }
+
+  // Set page cache max-age to 1 day (86400 seconds).
+  $config = \Drupal::configFactory()->getEditable('system.performance');
+  $current_max_age = $config->get('cache.page.max_age');
+  $config->set('cache.page.max_age', 86400)->save();
+  $messages[] = t('Set page cache max-age to 86400 (1 day). Was: @old.', [
+    '@old' => $current_max_age ?? '0',
+  ]);
+
+  return implode(' ', $messages);
+}
+
+/**
+ * Create MCP Agent OAuth consumer and disable JSON:API read-only mode.
+ */
+function dc_core_update_10019() {
+  $messages = [];
+
+  // 1. Create MCP Agent OAuth consumer (non-third-party, inherits admin permissions).
+  $random = new Random();
+  $consumerStorage = \Drupal::entityTypeManager()->getStorage('consumer');
+
+  // Delete existing MCP Agent consumer if exists.
+  $existing = $consumerStorage->loadByProperties(['label' => 'MCP Agent']);
+  foreach ($existing as $consumer) {
+    $consumer->delete();
+  }
+
+  $mcpClientId = Crypt::randomBytesBase64();
+  $mcpClientSecret = $random->word(8);
+
+  $mcpData = [
+    'client_id' => $mcpClientId,
+    'client_secret' => $mcpClientSecret,
+    'label' => 'MCP Agent',
+    'user_id' => 1,
+    'third_party' => FALSE,
+    'is_default' => FALSE,
+  ];
+
+  $consumerStorage->create($mcpData)->save();
+  \Drupal::logger('dc_core')->notice('Created MCP Agent OAuth consumer (non-third-party, user 1).');
+  $messages[] = t('Created MCP Agent OAuth consumer.');
+
+  // 2. Disable JSON:API read-only mode (allows POST/PATCH/DELETE).
+  $config = \Drupal::configFactory()->getEditable('jsonapi.settings');
+  $config->set('read_only', FALSE)->save();
+  \Drupal::logger('dc_core')->notice('Set JSON:API read_only to FALSE.');
+  $messages[] = t('Disabled JSON:API read-only mode.');
+
+  return implode(' ', $messages);
+}
+
+/**
+ * Install multilingual modules for existing sites.
+ */
+function dc_core_update_10014() {
+  $modules_to_install = [
+    'language',
+    'locale',
+    'content_translation',
+    'config_translation',
+  ];
+
+  $module_installer = \Drupal::service('module_installer');
+  $module_handler = \Drupal::service('module_handler');
+
+  $installed = [];
+  $already_installed = [];
+
+  foreach ($modules_to_install as $module) {
+    if ($module_handler->moduleExists($module)) {
+      $already_installed[] = $module;
+    }
+    else {
+      try {
+        $module_installer->install([$module]);
+        $installed[] = $module;
+        \Drupal::logger('dc_core')->notice('Installed multilingual module: @module', [
+          '@module' => $module,
+        ]);
+      }
+      catch (\Exception $e) {
+        \Drupal::logger('dc_core')->error('Failed to install @module: @error', [
+          '@module' => $module,
+          '@error' => $e->getMessage(),
+        ]);
+      }
+    }
+  }
+
+  $messages = [];
+  if (!empty($installed)) {
+    $messages[] = t('Installed: @modules', ['@modules' => implode(', ', $installed)]);
+  }
+  if (!empty($already_installed)) {
+    $messages[] = t('Already installed: @modules', ['@modules' => implode(', ', $already_installed)]);
+  }
+
+  return implode('. ', $messages) ?: t('Multilingual modules installation complete.');
+}
+
+/**
+ * Uninstall dc_chatbot module and clean up blocks.
+ */
+function dc_core_update_10020() {
+  $module_handler = \Drupal::service('module_handler');
+  $module_installer = \Drupal::service('module_installer');
+  $messages = [];
+
+  if ($module_handler->moduleExists('dc_chatbot')) {
+    try {
+      $module_installer->uninstall(['dc_chatbot']);
+      $messages[] = t('Uninstalled dc_chatbot module.');
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('dc_core')->error('Failed to uninstall dc_chatbot: @error', [
+        '@error' => $e->getMessage(),
+      ]);
+      $messages[] = t('Failed to uninstall dc_chatbot: @error', ['@error' => $e->getMessage()]);
+    }
+  }
+  else {
+    $messages[] = t('dc_chatbot already uninstalled.');
+  }
+
+  // Clean up any remaining chatbot blocks.
+  $block_storage = \Drupal::entityTypeManager()->getStorage('block');
+  $blocks = $block_storage->loadByProperties(['plugin' => 'dc_chatbot_block']);
+  foreach ($blocks as $block) {
+    $block->delete();
+    $messages[] = t('Deleted chatbot block: @id', ['@id' => $block->id()]);
+  }
+
+  return implode(' ', $messages);
+}
+
+/**
+ * Add default pathauto pattern for nodes and hide "Member for" on user display.
+ */
+function dc_core_update_10021() {
+  $messages = [];
+
+  // 1. Create default pathauto pattern for all nodes: [node:title]
+  $pattern_storage = \Drupal::entityTypeManager()->getStorage('pathauto_pattern');
+  if (!$pattern_storage->load('node_default')) {
+    $pattern = $pattern_storage->create([
+      'id' => 'node_default',
+      'label' => 'Default node URL alias',
+      'type' => 'canonical_entities:node',
+      'pattern' => '[node:title]',
+      'status' => TRUE,
+    ]);
+    $pattern->save();
+    $messages[] = t('Created default pathauto pattern for nodes: [node:title].');
+  }
+  else {
+    $messages[] = t('Pathauto node_default pattern already exists.');
+  }
+
+  // 2. Hide "Member for" from user default display (prevents it showing on node pages).
+  $display_storage = \Drupal::entityTypeManager()->getStorage('entity_view_display');
+  $display = $display_storage->load('user.user.default');
+  if ($display) {
+    $display->removeComponent('member_for');
+    $display->save();
+    $messages[] = t('Hidden "Member for" from user default display.');
+  }
+  else {
+    $messages[] = t('User default display not found, skipping.');
+  }
+
+  return implode(' ', $messages);
+}

@@ -1,0 +1,123 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the dc_usage module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function dc_usage_install() {
+  // Create the API requests table immediately
+  $database = \Drupal::database();
+  $schema = $database->schema();
+  
+  if (!$schema->tableExists('dc_usage_api_requests')) {
+    $table_spec = [
+      'description' => 'Stores API request logs for usage tracking.',
+      'fields' => [
+        'id' => [
+          'type' => 'serial',
+          'not null' => TRUE,
+          'description' => 'Primary Key: Unique request ID.',
+        ],
+        'endpoint_path' => [
+          'type' => 'varchar',
+          'length' => 500,
+          'not null' => TRUE,
+          'description' => 'The API endpoint path.',
+        ],
+        'method' => [
+          'type' => 'varchar',
+          'length' => 10,
+          'not null' => TRUE,
+          'description' => 'HTTP method (GET, POST, etc.).',
+        ],
+        'api_type' => [
+          'type' => 'varchar',
+          'length' => 50,
+          'not null' => TRUE,
+          'description' => 'Type of API (jsonapi, graphql, rest, custom).',
+        ],
+        'response_time' => [
+          'type' => 'int',
+          'not null' => TRUE,
+          'description' => 'Response time in milliseconds.',
+        ],
+        'status_code' => [
+          'type' => 'int',
+          'not null' => TRUE,
+          'description' => 'HTTP status code.',
+        ],
+        'request_size' => [
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+          'description' => 'Request size in bytes.',
+        ],
+        'response_size' => [
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+          'description' => 'Response size in bytes.',
+        ],
+        'total_bytes' => [
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+          'description' => 'Total bytes transferred (request + response).',
+        ],
+        'timestamp' => [
+          'type' => 'int',
+          'not null' => TRUE,
+          'description' => 'Unix timestamp of the request.',
+        ],
+      ],
+      'primary key' => ['id'],
+      'indexes' => [
+        'api_type' => ['api_type'],
+        'timestamp' => ['timestamp'],
+        'endpoint_path' => ['endpoint_path'],
+        'total_bytes' => ['total_bytes'],
+      ],
+    ];
+    $schema->createTable('dc_usage_api_requests', $table_spec);
+  }
+  
+  // Log installation
+  \Drupal::logger('dc_usage')->info('Decoupled Drupal Usage module has been installed.');
+  
+  // Set module weight to ensure it loads after core modules
+  module_set_weight('dc_usage', 10);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function dc_usage_uninstall() {
+  // Clean up any configuration
+  \Drupal::configFactory()->getEditable('dc_usage.settings')->delete();
+  
+  // Log uninstallation
+  \Drupal::logger('dc_usage')->info('Decoupled Drupal Usage module has been uninstalled.');
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function dc_usage_requirements($phase) {
+  $requirements = [];
+
+  if ($phase == 'runtime') {
+    $requirements['dc_usage'] = [
+      'title' => t('Decoupled Drupal Usage'),
+      'value' => t('Module is active and tracking usage'),
+      'severity' => REQUIREMENT_OK,
+      'description' => t('The Decoupled Drupal Usage module is properly installed and functioning.'),
+    ];
+  }
+
+  return $requirements;
+}
+

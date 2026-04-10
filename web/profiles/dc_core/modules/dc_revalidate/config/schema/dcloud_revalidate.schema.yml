@@ -1,0 +1,13 @@
+dc_revalidate.settings:
+  type: config_object
+  label: 'Dc Revalidate Settings'
+  mapping:
+    enabled:
+      type: boolean
+      label: 'Enable revalidation'
+    frontend_url:
+      type: string
+      label: 'Frontend URL'
+    revalidate_secret:
+      type: string
+      label: 'Revalidation Secret'

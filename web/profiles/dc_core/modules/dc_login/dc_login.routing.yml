@@ -1,0 +1,14 @@
+dc_login.api_generate:
+  path: '/api/generate-login'
+  defaults:
+    _controller: '\Drupal\dc_login\Controller\LoginApiController::generate'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+
+dc_login.api_status:
+  path: '/api/generate-login/status'
+  defaults:
+    _controller: '\Drupal\dc_login\Controller\LoginApiController::status'
+  requirements:
+    _access: 'TRUE'

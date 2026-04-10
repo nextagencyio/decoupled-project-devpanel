@@ -1,0 +1,19 @@
+dc_config.vercel:
+  type: config_object
+  label: 'Vercel Integration Settings'
+  mapping:
+    access_token:
+      type: string
+      label: 'Vercel Access Token'
+    team_id:
+      type: string
+      label: 'Vercel Team ID'
+    connected_project_id:
+      type: string
+      label: 'Connected Vercel Project ID'
+    connected_project_name:
+      type: string
+      label: 'Connected Vercel Project Name'
+    last_synced:
+      type: integer
+      label: 'Last Synced Timestamp'

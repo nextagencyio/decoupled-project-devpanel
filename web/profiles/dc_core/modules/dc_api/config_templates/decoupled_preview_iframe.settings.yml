@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: null
+redirect_anonymous: false
+redirect_url: ''
+preview_url: ''
+preview_types:
+  node:
+    homepage: homepage
+    article: article
+    page: page

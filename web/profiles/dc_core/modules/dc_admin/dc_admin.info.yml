@@ -1,0 +1,12 @@
+name: 'Decoupled Drupal Admin'
+type: module
+description: 'Admin interface configuration with Gin theme for Decoupled Drupal'
+package: Decoupled
+core_version_requirement: ^11
+version: 1.0.0
+dependencies:
+  - drupal:block
+  - gin:gin_login
+  - gin:gin_toolbar
+  - admin_toolbar:admin_toolbar
+  - admin_toolbar:admin_toolbar_tools

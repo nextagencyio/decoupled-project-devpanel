@@ -1,0 +1,32 @@
+dc_usage.usage_stats:
+  path: '/api/decoupled/usage'
+  defaults:
+    _controller: '\Drupal\dc_usage\Controller\UsageController::getUsageStats'
+    _title: 'Usage Statistics'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
+  options:
+    no_cache: TRUE
+
+dc_usage.detailed_usage:
+  path: '/api/decoupled/usage/detailed'
+  defaults:
+    _controller: '\Drupal\dc_usage\Controller\UsageController::getDetailedUsage'
+    _title: 'Detailed Usage Statistics'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
+  options:
+    no_cache: TRUE
+
+dc_usage.debug:
+  path: '/api/decoupled/usage/debug'
+  defaults:
+    _controller: '\Drupal\dc_usage\Controller\UsageController::debugInfo'
+    _title: 'Debug Usage Module'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
+  options:
+    no_cache: TRUE

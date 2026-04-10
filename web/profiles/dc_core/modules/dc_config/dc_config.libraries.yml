@@ -1,0 +1,18 @@
+dc_config:
+  version: 1.0
+  css:
+    theme:
+      css/dc-config.css: {}
+  js:
+    js/dc-config.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+# Admin theme branding loaded globally
+admin_branding:
+  version: 1.0
+  css:
+    theme:
+      css/dc-config.css: {}
+      # Only the Gin customization section will apply to admin pages

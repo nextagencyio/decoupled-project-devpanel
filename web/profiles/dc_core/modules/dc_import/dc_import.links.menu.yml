@@ -1,0 +1,6 @@
+dc_import.admin_import:
+  title: 'Import Content'
+  description: 'Import content types, taxonomies, and content from JSON'
+  route_name: dc_import.admin_import
+  parent: system.admin_config_development
+  weight: 100

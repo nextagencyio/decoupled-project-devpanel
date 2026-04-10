@@ -1,0 +1,8 @@
+dc_config.frontend:
+  type: config_object
+  label: 'Frontend deployment status'
+  mapping:
+    data:
+      type: mapping
+      label: 'Frontend data'
+      nullable: true

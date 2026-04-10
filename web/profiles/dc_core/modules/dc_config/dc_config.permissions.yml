@@ -1,0 +1,3 @@
+administer decoupled configuration:
+  title: 'Administer Decoupled Drupal configuration'
+  description: 'View OAuth credentials and configuration instructions for Decoupled Drupal integration'

@@ -1,0 +1,7 @@
+name: Decoupled Mail
+type: module
+description: 'Custom mail handler for Decoupled.io using Resend HTTP API. API key is read from RESEND_API_KEY environment variable - never stored in config.'
+package: Decoupled
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:system

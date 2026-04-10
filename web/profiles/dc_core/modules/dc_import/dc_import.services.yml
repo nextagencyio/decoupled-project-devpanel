@@ -1,0 +1,13 @@
+services:
+  dc_import.field_type_mapper:
+    class: Drupal\dc_import\Service\FieldTypeMapper
+
+  dc_import.file_validation:
+    class: Drupal\dc_import\Service\FileValidationService
+
+  dc_import.importer:
+    class: Drupal\dc_import\Service\DrupalContentImporter
+    arguments: ['@entity_type.manager', '@config.factory', '@dc_import.field_type_mapper']
+
+  dc_import.schema_validator:
+    class: Drupal\dc_import\Service\JsonSchemaValidator

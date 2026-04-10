@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the dc_mail module.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * Logs that Resend mail is enabled.
+ * Configuration is handled via settings.php (see dc_core.install).
+ */
+function dc_mail_install() {
+  \Drupal::logger('dc_mail')->info('Resend HTTP API mail plugin enabled. Ensure RESEND_API_KEY environment variable is set.');
+}

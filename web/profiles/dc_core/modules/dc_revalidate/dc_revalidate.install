@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the dc_revalidate module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function dc_revalidate_install() {
+  // Generate a revalidation secret when the module is installed.
+  $config = \Drupal::configFactory()->getEditable('dc_revalidate.settings');
+  
+  // Only generate if no secret exists
+  if (empty($config->get('revalidate_secret'))) {
+    $revalidate_secret = bin2hex(random_bytes(16));
+    $config->set('revalidate_secret', $revalidate_secret);
+    $config->save();
+    
+    \Drupal::logger('dc_revalidate')->info('Generated revalidation secret during module installation.');
+  }
+}

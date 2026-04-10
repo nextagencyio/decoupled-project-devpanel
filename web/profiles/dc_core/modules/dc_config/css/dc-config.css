@@ -1,0 +1,1899 @@
+/* Decoupled Drupal Configuration Page Styles - Modern Full-Width Layout */
+
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+}
+
+/* Main layout structure */
+.dc-config-main-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  position: relative;
+}
+
+.dc-config-content-area {
+  flex: 1;
+  padding: 2rem;
+  padding-right: 1rem;
+}
+
+.dc-config-main-content {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Header styles */
+.dc-config-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dc-config-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.dc-config-logo-text {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.025em;
+}
+
+.dc-config-header h1 {
+  font-size: 2.25rem;
+  margin: 0 0 0.75rem 0;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.dc-config-header p {
+  font-size: 1.125rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Section styles */
+.dc-config-section {
+  margin: 2.5rem 0;
+}
+
+.dc-config-section h2 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dc-config-section h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 0.75rem 0;
+}
+
+.dc-config-section p {
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Tip styles */
+.dc-config-tip {
+  background: linear-gradient(135deg, #f3e8ff 0%, #faf5ff 100%);
+  border: 1px solid #a855f7;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.dc-config-tip-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.dc-config-tip p {
+  margin: 0;
+  color: #581c87;
+  font-weight: 500;
+}
+
+/* Featured option (Vercel) */
+.dc-config-featured-option {
+  margin: 2rem 0;
+}
+
+.dc-config-featured-card {
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  border: 2px solid #333333;
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.dc-config-featured-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #a855f7, #ec4899);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.dc-config-featured-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.dc-config-featured-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%);
+  color: white;
+  padding: 0.375rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.dc-config-featured-header h3 {
+  color: white;
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 700;
+}
+
+.dc-config-featured-header p {
+  color: #a1a1aa;
+  font-size: 1.125rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.dc-config-vercel-button-large {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  background: white !important;
+  color: #000000 !important;
+  padding: 1rem 2rem !important;
+  border: none !important;
+  border-radius: 12px !important;
+  text-decoration: none !important;
+  font-size: 1.125rem !important;
+  font-weight: 700 !important;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+  margin: 0 auto !important;
+}
+
+.dc-config-vercel-button-large:hover {
+  background: #f5f5f5 !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 32px rgba(255, 255, 255, 0.3) !important;
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+.dc-config-vercel-button-large svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.dc-config-arrow {
+  font-size: 1.25rem;
+  transition: transform 0.3s ease;
+}
+
+.dc-config-vercel-button-large:hover .dc-config-arrow {
+  transform: translateX(4px);
+}
+
+.dc-config-vercel-deploy {
+  text-align: center;
+}
+
+.dc-config-vercel-note {
+  margin: 1rem 0 0 0;
+  font-size: 0.875rem;
+  color: #a1a1aa;
+  font-style: italic;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Alternative options header */
+.dc-config-alternative-header {
+  margin: 3rem 0 1.5rem 0;
+  text-align: center;
+}
+
+.dc-config-alternative-header h3 {
+  color: #64748b;
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Setup options */
+.dc-config-setup-options {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.dc-config-single-option {
+  max-width: 600px;
+  width: 100%;
+}
+
+.dc-config-option-card {
+  background: linear-gradient(135deg, #faf5ff, #f5f3ff);
+  border: 1px solid #e9d5ff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.dc-config-option-card:hover {
+  border-color: #8B5CF6;
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.2);
+  transform: translateY(-2px);
+}
+
+.dc-config-option-header h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.dc-config-option-header p {
+  margin: 0 0 1rem 0;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+/* Code blocks */
+.dc-config-code-block {
+  position: relative;
+  background: #1e293b;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+  border: 1px solid #334155;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dc-config-code-block:hover {
+  border-color: #a855f7;
+  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.2);
+  transform: translateY(-1px);
+}
+
+.dc-config-code-title {
+  background: #334155;
+  color: #e2e8f0;
+  padding: 0.75rem 1rem;
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 12px 12px 0 0;
+  border-bottom: 1px solid #475569;
+}
+
+.dc-config-code-content {
+  position: relative;
+}
+
+.dc-config-code-block pre {
+  background: transparent;
+  color: #e2e8f0;
+  padding: 1.25rem;
+  margin: 0;
+  font-family: 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border-radius: 0 0 12px 12px;
+  overflow-x: auto;
+}
+
+.dc-config-code-block.has-title pre {
+  border-radius: 0 0 12px 12px;
+}
+
+/* Button container */
+.dc-config-buttons {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.dc-config-copy-button,
+.dc-config-download-button {
+  background: #a855f7;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dc-config-copy-button:hover,
+.dc-config-download-button:hover {
+  background: #9333ea;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.dc-config-download-button {
+  background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+}
+
+.dc-config-download-button:hover {
+  background: linear-gradient(135deg, #8B5CF6, #EC4899);
+}
+
+.dc-config-copy-button--success,
+.dc-config-download-button--success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+.dc-config-copy-button--error,
+.dc-config-download-button--error {
+  background: #ef4444 !important;
+}
+
+/* Generate secret button */
+.dc-config-generate-secret {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.dc-config-generate-button {
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%) !important;
+  color: white !important;
+  padding: 0.75rem 1.5rem !important;
+  border: none !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3) !important;
+  transition: all 0.2s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  text-decoration: none !important;
+}
+
+.dc-config-generate-button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4) !important;
+  background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%) !important;
+}
+
+.dc-config-generate-help {
+  margin: 0.75rem 0 0 0;
+  font-size: 0.75rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Vercel deploy button */
+.dc-config-vercel-deploy {
+  margin: 1rem 0;
+}
+
+.dc-config-vercel-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  background: #000000 !important;
+  color: white !important;
+  padding: 0.75rem 1.5rem !important;
+  border: none !important;
+  border-radius: 8px !important;
+  text-decoration: none !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.dc-config-vercel-button:hover {
+  background: #1a1a1a !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4) !important;
+  color: white !important;
+  text-decoration: none !important;
+}
+
+.dc-config-vercel-button svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.dc-config-vercel-note {
+  margin: 0.75rem 0 0 0;
+  font-size: 0.75rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+
+/* Sidebar */
+.dc-config-sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  padding: 2rem 2rem 2rem 1rem;
+}
+
+.dc-config-sidebar-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.dc-config-sidebar-content {
+  padding: 1.5rem;
+}
+
+.dc-config-sidebar h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 1.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dc-config-sidebar-icon {
+  font-size: 1.25rem;
+}
+
+/* Checklist */
+.dc-config-checklist {
+  margin-bottom: 2rem;
+}
+
+.dc-config-checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dc-config-checklist-item:last-child {
+  border-bottom: none;
+}
+
+.dc-config-step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8B5CF6, #EC4899);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+
+.dc-config-step-content {
+  flex: 1;
+}
+
+.dc-config-step-title {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.dc-config-step-description {
+  font-size: 0.75rem;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+/* Help links */
+.dc-config-help-links {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding-top: 1.25rem;
+}
+
+.dc-config-help-links h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 0.75rem 0;
+}
+
+.dc-config-help-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dc-config-help-links li {
+  margin-bottom: 0.5rem;
+}
+
+.dc-config-help-links a {
+  color: #a855f7;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.dc-config-help-links a:hover {
+  color: #9333ea;
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .dc-config-main-layout {
+    flex-direction: column;
+  }
+  
+  .dc-config-sidebar {
+    width: 100%;
+    padding: 0 2rem 2rem 2rem;
+  }
+  
+  .dc-config-content-area {
+    padding-right: 2rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dc-config-featured-card {
+    padding: 1.5rem;
+  }
+  
+  .dc-config-featured-header h3 {
+    font-size: 1.75rem;
+  }
+  
+  .dc-config-vercel-button-large {
+    font-size: 1rem !important;
+    padding: 0.875rem 1.75rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .dc-config-content-area {
+    padding: 1rem;
+  }
+
+  .dc-config-main-content {
+    padding: 1.5rem;
+  }
+
+  .dc-config-header {
+    padding: 1.5rem;
+  }
+
+  .dc-config-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .dc-config-logo-text {
+    font-size: 1.5rem;
+  }
+
+  .dc-config-setup-options {
+    grid-template-columns: 1fr;
+  }
+
+  .dc-config-featured-card {
+    padding: 1.25rem;
+  }
+
+  .dc-config-featured-header h3 {
+    font-size: 1.5rem;
+  }
+
+  .dc-config-featured-header p {
+    font-size: 1rem;
+  }
+
+  .dc-config-vercel-button-large {
+    font-size: 0.875rem !important;
+    padding: 0.75rem 1.5rem !important;
+  }
+
+  .dc-config-buttons {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0 0 0;
+  }
+
+  .dc-config-copy-button,
+  .dc-config-download-button {
+    width: 100%;
+  }
+}
+
+/* ============================================================================
+   Decoupled Config Page - Custom Branding (does not affect other admin pages)
+   ============================================================================ */
+
+/* CSS Variables scoped to dc-config elements only */
+:root {
+  /* Gradient colors for logo and backgrounds */
+  --dc-gradient-blue: #3B82F6;
+  --dc-gradient-purple: #8B5CF6;
+  --dc-gradient-pink: #EC4899;
+}
+
+/* Cloud SVG logo icon */
+.dc-config-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dc-config-logo-icon img {
+  display: block;
+  width: 64px;
+  height: 64px;
+}
+
+/* Change "Decoupled Drupal" to "Decoupled Drupal" */
+.dc-config-logo-text::before {
+  content: 'Decoupled Drupal';
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.025em;
+}
+
+.dc-config-logo-text {
+  font-size: 0 !important;
+}
+
+/* =============================================================================
+   VERCEL INTEGRATION STYLES
+   ============================================================================= */
+
+/* Vercel Integration Section */
+.dc-config-vercel-integration {
+  margin-top: 1.5rem;
+}
+
+.dc-config-vercel-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+  margin: 1.5rem 0;
+}
+
+/* Connected State */
+.dc-config-vercel-connected {
+  padding: 1rem 0;
+}
+
+.dc-config-vercel-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.dc-config-status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dc-config-status-connected {
+  background-color: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.4);
+}
+
+.dc-config-status-disconnected {
+  background-color: #94a3b8;
+}
+
+/* Project Selector */
+.dc-config-vercel-project-selector {
+  margin-bottom: 1rem;
+}
+
+.dc-config-vercel-project-selector label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.dc-config-select {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #1f2937;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dc-config-select:hover {
+  border-color: #9ca3af;
+}
+
+.dc-config-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Vercel Actions */
+.dc-config-vercel-actions {
+  margin-bottom: 1rem;
+}
+
+.dc-config-sync-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.dc-config-sync-button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.dc-config-sync-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.dc-config-vercel-last-sync {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin: 0.5rem 0;
+}
+
+/* Disconnect Link */
+.dc-config-vercel-disconnect {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.dc-config-disconnect-link {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+
+.dc-config-disconnect-link:hover {
+  color: #ef4444;
+  text-decoration: underline;
+}
+
+/* Not Connected State */
+.dc-config-vercel-connect {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.dc-config-vercel-connect-text {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 1rem !important;
+}
+
+.dc-config-connect-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2937;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.dc-config-connect-button:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #1f2937;
+  text-decoration: none;
+}
+
+.dc-config-connect-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.dc-config-vercel-connect-help {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 0.75rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* =============================================================================
+   VERCEL HERO SECTION - New Redesigned Layout
+   ============================================================================= */
+
+.dc-config-vercel-hero {
+  margin-bottom: 2rem;
+}
+
+/* Sequential steps layout */
+.dc-config-vercel-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.dc-config-vercel-step {
+  display: flex;
+  gap: 1.25rem;
+}
+
+/* Step marker (number + connecting line) */
+.dc-config-step-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 40px;
+}
+
+.dc-config-step-number-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%);
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.dc-config-step-line {
+  width: 2px;
+  flex: 1;
+  min-height: 24px;
+  background: linear-gradient(180deg, #8B5CF6 0%, #e5e7eb 100%);
+  margin: 0.5rem 0;
+}
+
+/* Step card */
+.dc-config-vercel-step-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.dc-config-vercel-step-card--deploy {
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+}
+
+.dc-config-vercel-step-card--deploy:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.dc-config-vercel-step-card--connect {
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  border: 2px solid #333;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  position: relative;
+}
+
+.dc-config-vercel-step-card--connect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+}
+
+/* Step content */
+.dc-config-vercel-step-content {
+  flex: 1;
+}
+
+.dc-config-vercel-step-content h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 0.375rem 0;
+}
+
+.dc-config-vercel-step-card--deploy .dc-config-vercel-step-content h3 {
+  color: #1f2937;
+}
+
+.dc-config-vercel-step-card--connect .dc-config-vercel-step-content h3 {
+  color: #fff;
+}
+
+.dc-config-vercel-step-content p {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.dc-config-vercel-step-card--deploy .dc-config-vercel-step-content p {
+  color: #6b7280;
+}
+
+.dc-config-vercel-step-card--connect .dc-config-vercel-step-content p {
+  color: #a1a1aa;
+}
+
+/* Responsive: Stack on mobile */
+@media (max-width: 768px) {
+  .dc-config-vercel-step-card {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .dc-config-vercel-step-content {
+    width: 100%;
+  }
+}
+
+/* Connect Button (Primary) */
+.dc-config-vercel-connect-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.625rem !important;
+  background: #fff !important;
+  color: #000 !important;
+  padding: 0.875rem 1.5rem !important;
+  border: none !important;
+  border-radius: 10px !important;
+  text-decoration: none !important;
+  font-size: 0.9375rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15) !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.dc-config-vercel-connect-btn:hover {
+  background: #f5f5f5 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2) !important;
+  color: #000 !important;
+  text-decoration: none !important;
+}
+
+.dc-config-vercel-connect-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Deploy Button (Secondary) */
+.dc-config-vercel-deploy-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.625rem !important;
+  background: #000 !important;
+  color: #fff !important;
+  padding: 0.875rem 1.5rem !important;
+  border: none !important;
+  border-radius: 10px !important;
+  text-decoration: none !important;
+  font-size: 0.9375rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.dc-config-vercel-deploy-btn:hover {
+  background: #1a1a1a !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+.dc-config-vercel-deploy-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.dc-config-vercel-deploy-btn .dc-config-arrow {
+  font-size: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.dc-config-vercel-deploy-btn:hover .dc-config-arrow {
+  transform: translateX(3px);
+}
+
+/* Connected State Card */
+.dc-config-vercel-connected-card {
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  border: 2px solid #333;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.dc-config-vercel-connected-card::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, #22c55e, #10b981, #059669);
+}
+
+.dc-config-vercel-connected-header {
+  padding: 1.5rem 2rem 0;
+}
+
+.dc-config-vercel-connected-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #22c55e;
+}
+
+.dc-config-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dc-config-status-dot--connected {
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 8px rgba(34, 197, 94, 0.5); }
+  50% { box-shadow: 0 0 16px rgba(34, 197, 94, 0.8); }
+}
+
+.dc-config-vercel-connected-body {
+  padding: 1.5rem 2rem;
+}
+
+.dc-config-vercel-connected-body .dc-config-vercel-project-selector {
+  margin-bottom: 1.25rem;
+}
+
+.dc-config-vercel-connected-body .dc-config-vercel-project-selector label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #a1a1aa;
+  margin-bottom: 0.625rem;
+}
+
+.dc-config-vercel-connected-body .dc-config-select {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  font-size: 0.875rem;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  background-color: #262626;
+  color: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px;
+}
+
+.dc-config-vercel-connected-body .dc-config-select:hover {
+  border-color: #525252;
+}
+
+.dc-config-vercel-connected-body .dc-config-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.dc-config-vercel-connected-body .dc-config-vercel-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dc-config-vercel-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dc-config-vercel-status-row {
+  min-height: 1.25rem;
+}
+
+.dc-config-vercel-connected-body .dc-config-sync-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dc-config-vercel-connected-body .dc-config-sync-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.dc-config-vercel-connected-body .dc-config-sync-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dc-config-vercel-connected-body .dc-config-rebuild-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dc-config-vercel-connected-body .dc-config-rebuild-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.dc-config-vercel-connected-body .dc-config-rebuild-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dc-config-sync-status {
+  font-size: 0.8125rem;
+  color: #a1a1aa;
+}
+
+/* Rebuild button */
+.dc-config-rebuild-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.dc-config-rebuild-button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.dc-config-rebuild-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Deployment status */
+.dc-config-deploy-status {
+  font-size: 0.8125rem;
+}
+
+.dc-config-deploy-progress {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dc-config-deploy-status a {
+  color: #22c55e;
+  text-decoration: underline;
+}
+
+.dc-config-deploy-status a:hover {
+  color: #16a34a;
+}
+
+/* Spin animation for loading */
+@keyframes dc-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.dc-config-spin {
+  animation: dc-spin 1s linear infinite;
+}
+
+.dc-config-vercel-connected-body .dc-config-vercel-last-sync {
+  font-size: 0.75rem;
+  color: #71717a;
+  margin: 1rem 0 0 0;
+}
+
+.dc-config-vercel-connected-footer {
+  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid #333;
+}
+
+.dc-config-vercel-connected-footer .dc-config-disconnect-link {
+  background: none;
+  border: none;
+  color: #71717a;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+
+.dc-config-vercel-connected-footer .dc-config-disconnect-link:hover {
+  color: #ef4444;
+}
+
+/* Divider */
+.dc-config-divider {
+  display: flex;
+  align-items: center;
+  margin: 2rem 0;
+  color: #9ca3af;
+  font-size: 0.8125rem;
+}
+
+.dc-config-divider::before,
+.dc-config-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+}
+
+.dc-config-divider span {
+  padding: 0 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+/* =============================================================================
+   STARTER SELECTION GRID
+   ============================================================================= */
+
+.dc-config-starter-section {
+  margin-bottom: 1.5rem;
+}
+
+.dc-config-starter-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.dc-config-subtitle {
+  color: #64748b;
+  font-size: 0.9375rem;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+}
+
+/* Starter Grid - 4 columns */
+.dc-config-starter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .dc-config-starter-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dc-config-starter-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dc-config-starter-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+/* Starter Card */
+.dc-config-starter-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #fff;
+  text-align: center;
+}
+
+.dc-config-starter-card:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.dc-config-starter-card--selected {
+  border-color: #8B5CF6 !important;
+  background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%) !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+}
+
+.dc-config-starter-card--no-content {
+  opacity: 0.7;
+}
+
+.dc-config-starter-card--no-content:hover {
+  opacity: 0.85;
+}
+
+/* Starter Icon */
+.dc-config-starter-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  flex-shrink: 0;
+}
+
+.dc-config-starter-icon svg {
+  width: 24px;
+  height: 24px;
+  color: white;
+  stroke: white;
+}
+
+/* Starter Icon Colors */
+.dc-config-starter-icon--starter { background-color: #3B82F6; }
+.dc-config-starter-icon--commerce { background-color: #10B981; }
+.dc-config-starter-icon--chat { background-color: #8B5CF6; }
+.dc-config-starter-icon--search { background-color: #F59E0B; }
+.dc-config-starter-icon--university { background-color: #EC4899; }
+.dc-config-starter-icon--lang { background-color: #06B6D4; }
+.dc-config-starter-icon--sub { background-color: #EF4444; }
+.dc-config-starter-icon--components { background-color: #6366F1; }
+
+/* Starter Name */
+.dc-config-starter-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  line-height: 1.3;
+}
+
+/* Single Starter Layout */
+.dc-config-starter-single {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: #fff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.dc-config-starter-single-icon {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px;
+  border-radius: 12px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin: 0 !important;
+}
+
+.dc-config-starter-single-icon svg {
+  width: 24px;
+  height: 24px;
+  color: white;
+  stroke: white;
+}
+
+.dc-config-starter-single-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dc-config-starter-single-info p {
+  margin: 0.125rem 0 0 0;
+}
+
+.dc-config-starter-single-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.3;
+}
+
+.dc-config-starter-single-desc {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .dc-config-starter-single {
+    flex-direction: column !important;
+    text-align: center;
+  }
+}
+
+/* Import Button */
+.dc-config-import-btn {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  color: white !important;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.dc-config-starter-single .dc-config-import-btn {
+  width: auto;
+}
+
+.dc-config-import-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.35);
+  background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+}
+
+.dc-config-import-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Import Status */
+.dc-config-import-status {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  min-height: 1.5rem;
+}
+
+.dc-config-import-loading {
+  color: #8B5CF6;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dc-config-import-loading::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border: 2px solid #8B5CF6;
+  border-top-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: dc-spin 0.8s linear infinite;
+}
+
+.dc-config-import-success {
+  color: #22c55e;
+  font-weight: 500;
+}
+
+.dc-config-import-error {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.dc-config-import-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.dc-config-import-stats span {
+  background: #f1f5f9;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+/* Starter Installed State */
+.dc-config-starter-installed {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 2px solid #10b981;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.dc-config-starter-installed-icon {
+  width: 48px;
+  height: 48px;
+  background: #10b981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.dc-config-starter-installed-text {
+  flex: 1;
+}
+
+.dc-config-starter-installed-text strong {
+  display: block;
+  font-size: 1.125rem;
+  color: #065f46;
+  margin-bottom: 0.25rem;
+}
+
+.dc-config-starter-installed-text p {
+  margin: 0;
+  color: #047857;
+  font-size: 0.875rem;
+}
+
+/* Settings cards */
+.dc-settings-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.dc-settings-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  text-decoration: none;
+}
+.dc-settings-card:focus,
+.dc-settings-card:active {
+  outline: none;
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.dc-settings-card-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dc-settings-card-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1e293b;
+  line-height: 1.3;
+}
+.dc-settings-card-desc {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.4;
+  margin-top: 1px;
+}
+.dc-settings-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px !important;
+}
+
+/* Collapsible details */
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details > summary::marker {
+  display: none;
+  content: '';
+}
+details > summary:hover {
+  color: #1e293b;
+}
+details[open] > summary svg {
+  transform: rotate(180deg);
+}
+.dc-config-advanced-section.dc-config-section {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+.dc-config-advanced-section.dc-config-section > summary + div {
+  padding-top: 20px;
+}
+.dc-config-advanced-section.dc-config-section h3:first-child {
+  margin-top: 0;
+}
+
+/* Netlify Frontend Card */
+.dc-config-netlify-card {
+  background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+  border: 2px solid #86efac;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.dc-config-netlify-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.dc-config-netlify-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: #166534;
+}
+.dc-config-netlify-link {
+  color: #15803d;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+.dc-config-netlify-link:hover {
+  text-decoration: underline;
+}
+.dc-config-netlify-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.dc-config-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #166534;
+}
+.dc-config-netlify-claim {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 20px;
+}
+.dc-config-netlify-claim p {
+  margin: 0;
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.5;
+}
+.dc-config-claim-button {
+  display: inline-block;
+  background: linear-gradient(135deg, #00ad9f, #0e1e25);
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: opacity 0.2s;
+  margin: 14px 0;
+}
+.dc-config-claim-button:hover {
+  opacity: 0.9;
+  color: #fff;
+}
+.dc-config-claim-note {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+}
+.dc-config-step-done {
+  background: #16a34a !important;
+  color: #fff !important;
+  font-size: 12px;
+  font-weight: 700;
+}
+@keyframes dc-spin {
+  to { transform: rotate(360deg); }
+}
+.dc-config-spinner {
+  animation: dc-spin 1s linear infinite;
+}
+.dc-config-netlify-deploying {
+  background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+  border-color: #d1d5db;
+}
+.dc-config-netlify-next-steps {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #bbf7d0;
+}
+.dc-config-netlify-next-steps strong {
+  color: #166534;
+  font-size: 14px;
+}
+.dc-config-netlify-next-steps ul {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+}
+.dc-config-netlify-next-steps li {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.6;
+}
+.dc-config-netlify-next-steps a {
+  color: #15803d;
+  font-weight: 600;
+  text-decoration: none;
+}
+.dc-config-netlify-next-steps a:hover {
+  text-decoration: underline;
+}
+.dc-config-netlify-claimed {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #166534;
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid #86efac;
+  border-radius: 8px;
+}

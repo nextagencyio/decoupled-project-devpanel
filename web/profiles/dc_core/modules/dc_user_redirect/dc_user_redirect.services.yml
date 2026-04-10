@@ -1,0 +1,6 @@
+services:
+  dc_user_redirect.user_redirect_subscriber:
+    class: Drupal\dc_user_redirect\EventSubscriber\UserRedirectSubscriber
+    arguments: ['@current_user']
+    tags:
+      - { name: event_subscriber }

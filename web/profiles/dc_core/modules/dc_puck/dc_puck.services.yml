@@ -1,0 +1,6 @@
+services:
+  dc_puck.mapping:
+    class: Drupal\dc_puck\Service\PuckMappingService
+    arguments:
+      - '@entity_type.manager'
+      - '@state'

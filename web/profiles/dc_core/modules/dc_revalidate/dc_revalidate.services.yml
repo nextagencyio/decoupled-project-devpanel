@@ -1,0 +1,4 @@
+services:
+  dc_revalidate.revalidation_service:
+    class: Drupal\dc_revalidate\Service\RevalidationService
+    arguments: ['@http_client', '@config.factory', '@logger.factory']

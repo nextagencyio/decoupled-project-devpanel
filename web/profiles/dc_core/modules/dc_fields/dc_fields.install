@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the dc_fields module.
+ */
+
+use Drupal\image\Entity\ImageStyle;
+
+/**
+ * Implements hook_install().
+ */
+function dc_fields_install() {
+  // Remove WebP conversion effects from default image styles.
+  // Drupal 11 core adds WebP conversion by default, but PHP GD in Docker
+  // doesn't have WebP support enabled, causing "Error generating image" errors.
+  $styles = ['thumbnail', 'medium', 'large', 'wide'];
+
+  foreach ($styles as $style_name) {
+    $style = ImageStyle::load($style_name);
+    if ($style) {
+      $effects = $style->getEffects();
+      foreach ($effects as $effect) {
+        // Remove any image_convert or image_convert_avif effects
+        if (in_array($effect->getPluginId(), ['image_convert', 'image_convert_avif'])) {
+          $style->deleteImageEffect($effect);
+        }
+      }
+      $style->save();
+    }
+  }
+}

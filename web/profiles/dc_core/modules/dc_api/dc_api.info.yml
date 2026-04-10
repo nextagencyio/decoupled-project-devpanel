@@ -1,0 +1,14 @@
+name: 'Decoupled Drupal API'
+type: module
+description: 'API configurations (GraphQL, JSON:API, OAuth) for Decoupled Drupal'
+package: Decoupled
+core_version_requirement: ^11
+version: 1.0.0
+dependencies:
+  - drupal:jsonapi
+  - drupal:serialization
+  - graphql:graphql
+  - graphql_compose:graphql_compose
+  - simple_oauth:simple_oauth
+  - consumers:consumers
+  - decoupled_preview_iframe:decoupled_preview_iframe

@@ -1,0 +1,7 @@
+name: 'DC Login'
+type: module
+description: 'Provides one-time login URL generation API for Decoupled Drupal'
+core_version_requirement: ^10 || ^11
+package: 'Decoupled'
+dependencies:
+  - drupal:user

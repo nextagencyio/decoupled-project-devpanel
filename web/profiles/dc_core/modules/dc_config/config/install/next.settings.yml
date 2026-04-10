@@ -1,0 +1,2 @@
+base_url: 'https://dashboard.decoupled.io'
+revalidate_secret: 'not-set'

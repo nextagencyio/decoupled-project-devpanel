@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://decoupled.io/schemas/content-import.json",
+  "title": "Decoupled.io Content Import Schema",
+  "description": "Schema for importing content models and data into Drupal via the dc_import module",
+  "type": "object",
+  "required": ["model", "content"],
+  "additionalProperties": true,
+  "properties": {
+    "model": {
+      "type": "array",
+      "description": "Array of content type and paragraph type definitions",
+      "items": {
+        "$ref": "#/$defs/modelEntry"
+      }
+    },
+    "content": {
+      "type": "array",
+      "description": "Array of content entities to create",
+      "items": {
+        "$ref": "#/$defs/contentEntry"
+      }
+    },
+    "_comments": {
+      "type": "object",
+      "description": "Optional documentation object (ignored during import)"
+    }
+  },
+  "$defs": {
+    "modelEntry": {
+      "type": "object",
+      "description": "Defines a content type (node) or paragraph type",
+      "required": ["bundle"],
+      "additionalProperties": false,
+      "properties": {
+        "entity": {
+          "type": "string",
+          "description": "Entity type (node, paragraph, taxonomy_term). Defaults to 'node' if not specified.",
+          "enum": ["node", "paragraph", "taxonomy_term", "media"]
+        },
+        "bundle": {
+          "type": "string",
+          "description": "Machine name of the bundle (e.g., 'article', 'hero', 'card')",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for the content type"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the content type's purpose"
+        },
+        "body": {
+          "type": "boolean",
+          "description": "Whether to include the standard body field (only for nodes)",
+          "default": false
+        },
+        "fields": {
+          "type": "array",
+          "description": "Field definitions for this content type",
+          "items": {
+            "$ref": "#/$defs/fieldDefinition"
+          }
+        }
+      }
+    },
+    "fieldDefinition": {
+      "type": "object",
+      "description": "Defines a field on a content type",
+      "required": ["id", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Field machine name (without field_ prefix)",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable field label"
+        },
+        "type": {
+          "type": "string",
+          "description": "Field type with optional modifiers (! for required, [] for multiple)",
+          "pattern": "^(string|text|image|datetime|bool|link|email|integer|float|term\\([a-z_]+\\)|paragraph\\([a-z_|]+\\)|node\\([a-z_|]+\\))(\\[\\])?!?$"
+        },
+        "description": {
+          "type": "string",
+          "description": "Help text shown to content editors"
+        },
+        "settings": {
+          "type": "object",
+          "description": "Additional field settings",
+          "additionalProperties": true
+        }
+      }
+    },
+    "contentEntry": {
+      "type": "object",
+      "description": "A content entity to be created",
+      "required": ["type", "values"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for referencing this entity with @ref syntax"
+        },
+        "type": {
+          "type": "string",
+          "description": "Entity type and bundle in format 'entity.bundle' (e.g., 'node.article', 'paragraph.hero')",
+          "pattern": "^(node|paragraph|taxonomy_term|media)\\.[a-z][a-z0-9_]*$"
+        },
+        "path": {
+          "type": "string",
+          "description": "URL path alias for nodes (e.g., '/about', '/products/widget')",
+          "pattern": "^/.*$"
+        },
+        "values": {
+          "type": "object",
+          "description": "Field values for this entity",
+          "additionalProperties": true,
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Node title (required for nodes)"
+            },
+            "body": {
+              "type": "string",
+              "description": "Body field content (HTML allowed)"
+            }
+          }
+        }
+      }
+    },
+    "imageValue": {
+      "type": "object",
+      "description": "Image field value format",
+      "required": ["uri"],
+      "additionalProperties": false,
+      "properties": {
+        "uri": {
+          "type": "string",
+          "description": "Full URL to the image file",
+          "format": "uri"
+        },
+        "alt": {
+          "type": "string",
+          "description": "Alt text for accessibility"
+        },
+        "title": {
+          "type": "string",
+          "description": "Image title"
+        }
+      }
+    },
+    "linkValue": {
+      "type": "object",
+      "description": "Link field value format",
+      "required": ["uri"],
+      "additionalProperties": false,
+      "properties": {
+        "uri": {
+          "type": "string",
+          "description": "Link URL"
+        },
+        "title": {
+          "type": "string",
+          "description": "Link text"
+        }
+      }
+    }
+  }
+}

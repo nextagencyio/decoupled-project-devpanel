@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * @file
+ * Decoupled configuration module.
+ */
+
+/**
+ * Implements hook_page_attachments().
+ *
+ * Attach admin branding CSS to all admin pages.
+ */
+function dc_config_page_attachments(array &$attachments) {
+  // Check if we're on an admin route
+  $route_match = \Drupal::routeMatch();
+  $is_admin = \Drupal::service('router.admin_context')->isAdminRoute($route_match->getRouteObject());
+
+  // Attach admin branding library on admin pages
+  if ($is_admin) {
+    $attachments['#attached']['library'][] = 'dc_config/admin_branding';
+  }
+}
+
+/**
+ * Implements hook_user_login().
+ *
+ * Redirect users to the dc-config page after login instead of /user.
+ */
+function dc_config_user_login($account) {
+  // Only redirect if there's no destination already set (e.g., from a login link).
+  $current_request = \Drupal::request();
+  if (!$current_request->query->has('destination')) {
+    $current_request->query->set('destination', '/dc-config');
+  }
+}
+
+/**
+ * Implements hook_preprocess_ginlogin().
+ *
+ * Fix gin_login brand image and icon URLs to use relative paths.
+ * The gin_login contrib module uses the 'ginlogin' theme hook (not 'page'),
+ * and calls generateAbsoluteString() which resolves to the request host.
+ * When Kubernetes health probes hit the pod on localhost, the cached URL
+ * contains http://localhost/... which triggers browser "access local network"
+ * prompts. dc_config module weight is set to 10 so this runs after gin_login.
+ */
+function dc_config_preprocess_ginlogin(&$variables) {
+  // Convert brand_image to a root-relative URL.
+  if (!empty($variables['brand_image'])) {
+    $parsed = parse_url($variables['brand_image']);
+    if (isset($parsed['path'])) {
+      $variables['brand_image'] = $parsed['path'];
+    }
+  }
+
+  // Convert icon_path to a root-relative URL.
+  if (!empty($variables['icon_path'])) {
+    $parsed = parse_url($variables['icon_path']);
+    if (isset($parsed['path'])) {
+      $variables['icon_path'] = $parsed['path'];
+    }
+  }
+}

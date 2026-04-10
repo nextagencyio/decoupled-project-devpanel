@@ -1,0 +1,22 @@
+dc_config_import.api_import:
+  path: '/api/dc-config-import'
+  defaults:
+    _controller: '\Drupal\dc_config_import\Controller\ConfigImportApiController::import'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+
+dc_config_import.api_status:
+  path: '/api/dc-config-import/status'
+  defaults:
+    _controller: '\Drupal\dc_config_import\Controller\ConfigImportApiController::status'
+  requirements:
+    _access: 'TRUE'
+
+dc_config_import.api_allowed_types:
+  path: '/api/dc-config-import/allowed-types'
+  defaults:
+    _controller: '\Drupal\dc_config_import\Controller\ConfigImportApiController::allowedTypes'
+  requirements:
+    _access: 'TRUE'
+  methods: [GET]

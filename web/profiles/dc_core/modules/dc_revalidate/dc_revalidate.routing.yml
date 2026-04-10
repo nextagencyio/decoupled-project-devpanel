@@ -1,0 +1,7 @@
+dc_revalidate.settings:
+  path: '/admin/config/decoupled/revalidation'
+  defaults:
+    _form: '\Drupal\dc_revalidate\Form\DcRevalidateSettingsForm'
+    _title: 'Dc Revalidation Settings'
+  requirements:
+    _permission: 'administer decoupled revalidate'

@@ -1,0 +1,45 @@
+# Composer
+/vendor/
+/web/core/
+/web/modules/contrib/
+/web/themes/contrib/
+/web/libraries/
+
+# Drupal
+/web/sites/*/settings.php
+/web/sites/*/settings.local.php
+/web/sites/*/services.yml
+/web/sites/*/files/
+
+# Private files
+/private/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+/logs/*.log
+
+# DevPanel
+.devpanel/salt.txt
+.devpanel/dumps/
+
+# DDEV
+.ddev/.ddev-docker-compose-*
+.ddev/db_snapshots/
+.ddev/.homeadditions
+.ddev/.sshimageBuild
+.ddev/sequelpro.spf
+.ddev/.webimageBuild
+.ddev/xhprof/

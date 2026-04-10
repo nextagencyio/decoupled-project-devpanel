@@ -6,7 +6,8 @@
 /web/libraries/
 
 # Drupal
-/web/sites/*/settings.php
+# NOTE: settings.php is COMMITTED (not ignored) because DevPanel needs it
+# to exist before init.sh runs. It contains the DevPanel settings include.
 /web/sites/*/settings.local.php
 /web/sites/*/services.yml
 /web/sites/*/files/
@@ -43,3 +44,5 @@ Thumbs.db
 .ddev/sequelpro.spf
 .ddev/.webimageBuild
 .ddev/xhprof/
+/.editorconfig
+/.gitattributes

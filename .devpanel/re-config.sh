@@ -7,10 +7,31 @@
 STATIC_FILES_PATH="$WEB_ROOT/sites/default/files/"
 SETTINGS_FILES_PATH="$WEB_ROOT/sites/default/settings.php"
 
-# Create static files directory.
+# Create static files directory + media-icons subdirectory.
 if [ ! -d "$STATIC_FILES_PATH" ]; then
   mkdir -p $STATIC_FILES_PATH
 fi
+mkdir -p "${STATIC_FILES_PATH}media-icons/generic" || :
+
+# Ensure settings.php exists with DevPanel include.
+if [ ! -f "$SETTINGS_FILES_PATH" ]; then
+  echo 'Create settings.php from default.settings.php.'
+  cp "$WEB_ROOT/sites/default/default.settings.php" "$SETTINGS_FILES_PATH"
+  if ! grep -q 'settings.devpanel.php' "$SETTINGS_FILES_PATH"; then
+    cat >> "$SETTINGS_FILES_PATH" <<'SETTINGS_EOF'
+
+/**
+ * Load DevPanel override configuration, if available.
+ */
+$devpanel_settings = dirname($app_root) . '/.devpanel/settings.devpanel.php';
+if (getenv('DP_APP_ID') !== FALSE && file_exists($devpanel_settings)) {
+  include $devpanel_settings;
+}
+SETTINGS_EOF
+  fi
+fi
+chmod 666 "$SETTINGS_FILES_PATH" || :
+chmod 775 "$WEB_ROOT/sites/default" || :
 
 # Composer install.
 if [[ -f "$APP_ROOT/composer.json" ]]; then

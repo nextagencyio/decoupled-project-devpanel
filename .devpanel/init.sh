@@ -64,14 +64,38 @@ if [ ! -d config/sync ]; then
   time mkdir -p config/sync
 fi
 
+#== Create public files directory (must exist before Drupal can serve).
 if [ ! -d web/sites/default/files ]; then
   echo
   echo 'Create the public files directory.'
   [ -f web/sites/default/files ] && rm -f web/sites/default/files || :
   time mkdir -p web/sites/default/files || :
 fi
+mkdir -p web/sites/default/files/media-icons/generic || :
 echo 'Set permissions on public files directory.'
 time chmod -R 775 web/sites/default/files || :
+
+#== Ensure settings.php exists and is writable (drush site:install needs to write to it).
+if [ ! -f web/sites/default/settings.php ]; then
+  echo
+  echo 'Create settings.php from default.settings.php.'
+  cp web/sites/default/default.settings.php web/sites/default/settings.php
+  # Append DevPanel settings include if not already present.
+  if ! grep -q 'settings.devpanel.php' web/sites/default/settings.php; then
+    cat >> web/sites/default/settings.php <<'SETTINGS_EOF'
+
+/**
+ * Load DevPanel override configuration, if available.
+ */
+$devpanel_settings = dirname($app_root) . '/.devpanel/settings.devpanel.php';
+if (getenv('DP_APP_ID') !== FALSE && file_exists($devpanel_settings)) {
+  include $devpanel_settings;
+}
+SETTINGS_EOF
+  fi
+fi
+chmod 666 web/sites/default/settings.php || :
+chmod 775 web/sites/default || :
 
 #== Generate hash salt.
 if [ ! -f .devpanel/salt.txt ]; then

@@ -10,10 +10,17 @@
 # to exist before init.sh runs. It contains the DevPanel settings include.
 /web/sites/*/settings.local.php
 /web/sites/*/services.yml
-/web/sites/*/files/
+# Ignore files/ contents but keep the directory structure + .gitkeep files
+# so DevPanel has writable dirs before init.sh runs.
+/web/sites/*/files/*
+!/web/sites/*/files/.gitkeep
+!/web/sites/*/files/media-icons/
+!/web/sites/*/files/media-icons/generic/
+!/web/sites/*/files/media-icons/generic/.gitkeep
 
-# Private files
-/private/
+# Private files — ignore contents but keep dir + .gitkeep
+/private/*
+!/private/.gitkeep
 
 # Environment
 .env
